@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+  <head>
+    <title>Django</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for produto  in produtos  %}
+        <tr>
+          <td><a href="{% url 'produto' produto.id %}">{{produto.nome}}</a></td>
+          <td>{{produto.preco}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
