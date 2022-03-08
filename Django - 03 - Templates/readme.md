@@ -10,7 +10,7 @@ Este projeto teve como estudo usar um template base e usar a herança de templat
 - [5. Arquivos Estáticos](#5-arquivos-estáticos)
   - [5.1. Configuração dos Arquivos Estáticos](#51-configuração-dos-arquivos-estáticos)
   - [5.2. Estutura de Pastas e Arquivos](#52-estutura-de-pastas-e-arquivos)
-  - [5.3. Exemplo com Passagem de Context0](#53-exemplo-com-passagem-de-context0)
+  - [5.3. Exemplo com Passagem de Contexto](#53-exemplo-com-passagem-de-contexto)
   - [5.4. Urls Projeto](#54-urls-projeto)
   - [5.5. View da Aplicação](#55-view-da-aplicação)
   - [5.6. Url da Aplicação](#56-url-da-aplicação)
@@ -18,7 +18,7 @@ Este projeto teve como estudo usar um template base e usar a herança de templat
   - [5.8. Arquivo Index](#58-arquivo-index)
     - [5.8.1. Saída](#581-saída)
   - [5.9. Exemplo Com Herança, Arquivos Estáticos e Inclusão de Arquivos](#59-exemplo-com-herança-arquivos-estáticos-e-inclusão-de-arquivos)
-  - [5.10. Settings Projeto RESUMIDO](#510-settings-projeto-resumido)
+  - [5.10. Settings do Projeto](#510-settings-do-projeto)
   - [5.11. Urls Projeto](#511-urls-projeto)
   - [5.12. Url da Aplicação](#512-url-da-aplicação)
   - [5.13. View da Aplicação](#513-view-da-aplicação)
@@ -28,6 +28,7 @@ Este projeto teve como estudo usar um template base e usar a herança de templat
     - [5.16.1. HTMLs](#5161-htmls)
       - [5.16.1.1. Base](#51611-base)
       - [5.16.1.2. Index](#51612-index)
+      - [footer](#footer)
 - [6. TAGS](#6-tags)
   - [6.1. comment](#61-comment)
   - [6.2. csrf_token](#62-csrf_token)
@@ -107,7 +108,7 @@ My first name is John. My last name is Doe.
 
 As pesquisas de dicionário, de atributo e de índice de lista são implementadas com uma notação de ponto:
 
-```django
+```Django
 {{ my_dict.key }}
 {{ my_object.attribute }}
 {{ my_list.0 }}
@@ -118,11 +119,11 @@ As pesquisas de dicionário, de atributo e de índice de lista são implementada
 A parte mais poderosa - e portanto a mais complexa - do mecanismo de template do Django é a herança de template. A herança do modelo permite que você crie um modelo básico de “esqueleto” que contém todos os elementos comuns do seu site e define os blocos que os modelos filhos podem substituir.
 
 
-Para criar o modelo base, iremos criar um esquelo que irá conter todo que é comum em todoas as páginas que a herdarem, como links de bibliotecas, menus, barras laterais, rodapé, etc. 
+Para criar o modelo base, iremos criar um esqueleto que irá conter todo que é comum em todo as as páginas que a herdarem, como links de bibliotecas, menus, barras laterais, rodapé, etc. 
 
-exemplo de um arquivo base.html
+Exemplo de um arquivo `base.html`
 
-```python
+```Django
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,9 +148,9 @@ exemplo de um arquivo base.html
 </html>
 ```
 
-Usando as TAGS **Blocks**, podemos sobreescrever o que estiver contido dento deles usando o nome que a atribuímos no arquivo que herdar o documento base.  Exemplo de documento que herda de base. Para herdar, usamos a tag **extends**
+Usando as TAGS `{% block <name> %}{% endblock %}`, podemos sobrescrever o que estiver contido dento deles usando o nome que a atribuímos no arquivo que herdar o documento base.  Exemplo de documento que herda de base. Para herdar, usamos a tag `extends`
 
-```python
+```Django
 {% extends "base.html" %}
 
 {% block title %}My amazing blog{% endblock %}
@@ -163,19 +164,22 @@ Usando as TAGS **Blocks**, podemos sobreescrever o que estiver contido dento del
 ```
 
 ## 4.1. Dicas para usar a herança
+
 - Se você usar em um modelo, `{% extends %}` deve ser a primeira tag de modelo nesse modelo. A herança do modelo não funcionará, caso contrário.
 -  Mais tags `{% block %}` em seus modelos básicos são melhores. Lembre-se de que os modelos filhos não precisam definir todos os blocos pais, portanto, você pode preencher padrões razoáveis ​​em vários blocos e, em seguida, definir apenas aqueles de que precisa mais tarde. É melhor ter mais ganchos do que menos ganchos.
 -  Se você estiver duplicando conteúdo em vários modelos, provavelmente significa que você deve mover esse conteúdo para um `{% block %}` em um modelo pai.
 -  Se você precisar obter o conteúdo do bloco do template pai, a variável `{{ block.super }}{{ block.super }}` fará o truque. Isso é útil se você deseja adicionar ao conteúdo de um bloco pai em vez de substituí-lo completamente. Os dados inseridos usando não serão escapados automaticamente, uma vez que já foram escapados, se necessário, no modelo pai.
 -  Usando o mesmo nome de modelo do qual você está herdando, pode ser usado para herdar um modelo ao mesmo tempo em que o substitui. Combinado com `{% extends %}{{ block.super }}`, esta pode ser uma maneira poderosa de fazer pequenas personalizações. Consulte Estendendo um modelo substituído em Como substituir modelos para obter um exemplo completo.
 -  Variáveis ​​criadas fora de usando a sintaxe da tag template não podem ser usadas dentro do bloco. Por exemplo, este modelo não renderiza nada:
-```python
+  
+```Django
 {% block %}as{% translate "Title" as title %}
 {% block content %}{{ title }}{% endblock %}
 ```
-Para facilitar a leitura extra, você pode opcionalmente dar um nome à sua tag. Por exemplo: `{% endblock %}`
 
-```python
+Para facilitar a leitura extra, você pode opcionalmente dar um nome à sua tag. Por exemplo:
+
+```Django
     {% block content %}
     ...
     {% endblock content %}
@@ -186,9 +190,9 @@ Para facilitar a leitura extra, você pode opcionalmente dar um nome à sua tag.
 
 # 5. Arquivos Estáticos
 
-Para usar os arquivos estáticos dentro de um template, primeiro devemos configurar corretamente o arquivo **settings** espeficificando o caminhos dos arquivos estáticos. Em seguida devemos ter um diretório chamado static com os arquivos dentro da aplicação. Em seguida, em todos os templates, nas primeiras linhas devemos especificar que iremos usar arquivos estáticos, carregando ele com a tag `{% load static %}`.
+Para usar os arquivos estáticos dentro de um template, primeiro devemos configurar corretamente o arquivo `settings.py` especificando o caminho dos arquivos estáticos. Em seguida devemos ter um diretório chamado   `static` com os arquivos dentro da aplicação. Em seguida, em todos os templates, nas primeiras linhas devemos especificar que iremos usar arquivos estáticos, carregando ele com a tag `{% load static %}`.
 
-```python
+```Django
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
@@ -208,17 +212,17 @@ Para usar os arquivos estáticos dentro de um template, primeiro devemos configu
 ## 5.1. Configuração dos Arquivos Estáticos
 
 - Em testes podemos instalar a biblioteca
-- **whitenoise** - Responsável por cuidar dos arquivos estáticos em produção, como o JavaScript e CSS
+- `whitenoise` - Responsável por cuidar dos arquivos estáticos, como o JavaScript e CSS
 - Em produção devemos instalar a biblioteca 
-  - **dj-static** - Responsável por exibir arquivos estáticos e dinâmicos de forma mais segura, substituindo o whitenoise.
-- Para incluir imagens, devemos usar a biblioteca
-  -  **django-stdimage** - Trabalha com imagens dentro da aplicação (imagens de um produto, por exemplo)
-- Devemos alterar as aplicações permitidas dentro do arquivo **settings** para permitir as novas aplicações, como o **stdimage** e o **bootstrap4**. 
+  - `dj-static` - Responsável por exibir arquivos estáticos e dinâmicos de forma mais segura, substituindo o whitenoise.
+- Para incluir imagens, devemos usar?
+  -  `django-stdimage` - Trabalha com imagens dentro da aplicação (imagens de um produto, por exemplo)
+- Devemos alterar as aplicações permitidas dentro do arquivo `settings.py` para permitir as novas aplicações, como o `stdimage` e o `bootstrap4`. 
 
-- Caso seja usado o whitenoise, devemos **inserir o middleware na segunda linha**. com a seguinte sintaxe: `'whitenoise.middleware.WhiteNoiseMiddleware'`. 
-- Para permitir os templates, precisamos criar um diretório na aplicação chamado **templates**, e dentro da linha de configuração **TEMPLATES**, na opção **DIR** devemos especificar o diretório `DIR['templates']`.
+- Caso seja usado o `whitenoise`, devemos **inserir o middleware na segunda linha**. com a seguinte sintaxe: `'whitenoise.middleware.WhiteNoiseMiddleware'`. 
+- Para permitir os templates, precisamos criar um diretório na aplicação chamado `templates`, e dentro da linha de configuração `TEMPLATES`, na opção `DIR` devemos especificar o diretório: `DIR['templates']`.
 - Devemos também informar o diretório dos nosso arquivos estáticos como visto nas configurações acima. 
-- 
+  
 ```python
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -236,19 +240,21 @@ from dj_static import Cling, MediaCling
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 application = Cling(MediaCling(get_wsgi_application()))
 ```
-- Nos arquivos **.html** precismos informar que os mesmos irão trabalhar com arquivos estáticos. Para isso, bastamos usar a sintaxe abaixo
 
-```python
+- Nos arquivos `*.html` precismos informar que os mesmos irão trabalhar com arquivos estáticos. Para isso, bastamos usar a sintaxe abaixo
+
+```Django
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 ```
+
 - O comando abaixo é responsável por coletar todos os arquivos estáticos ao longo das aplicações e a reúnem de forma central dentro do Projeto. 
 
-```python
+```shell
 python manage.py collectstatic
 ```
 
-- Podemos também especificar os caminhos de mídias que foram especificados dentro do arquivo **settings**, para que o projeto faça o roteamento correto dos arquivos (caso seja necessário no projeto arquivos de mídias).
+- Podemos também especificar os caminhos de mídias que foram especificados dentro do arquivo `settings.py`, para que o projeto faça o roteamento correto dos arquivos (caso seja necessário no projeto arquivos de mídias).
 
 ```python
 from django.contrib import admin
@@ -279,7 +285,7 @@ urlpatterns = [
 - urls.py
 - views.py
 
-## 5.3. Exemplo com Passagem de Context0
+## 5.3. Exemplo com Passagem de Contexto
 
 
 ## 5.4. Urls Projeto
@@ -295,7 +301,8 @@ urlpatterns = [
 ```
 
 ## 5.5. View da Aplicação
-```Django
+
+```python
 from django.shortcuts import render
 
 def index(request):
@@ -304,7 +311,8 @@ def index(request):
 ```
 
 ## 5.6. Url da Aplicação
-```Django
+
+```python
 from django.urls import path
 from .views import index
 
@@ -314,7 +322,8 @@ urlpatterns = [
 ```
 
 ## 5.7. View da Aplicação
-```Django
+
+```python
 from django.shortcuts import render
 
 def index(request):
@@ -329,7 +338,7 @@ def index(request):
 
 ## 5.8. Arquivo Index
 
-```html
+```Django
 <html lang="pt-br">
 
   <head>
@@ -364,10 +373,9 @@ Lista de Cores
   - BLUE
 
 
-
 ## 5.9. Exemplo Com Herança, Arquivos Estáticos e Inclusão de Arquivos
 
-## 5.10. Settings Projeto RESUMIDO
+## 5.10. Settings do Projeto
 
 ```python
 from pathlib import Path, os
@@ -401,7 +409,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 ```
 
 ## 5.11. Urls Projeto
@@ -419,7 +426,8 @@ urlpatterns = [
 ```
 
 ## 5.12. Url da Aplicação
-```Django
+
+```python
 from django.urls import path
 from .views import index
 
@@ -429,7 +437,8 @@ urlpatterns = [
 ```
 
 ## 5.13. View da Aplicação
-```Django
+
+```python
 from django.shortcuts import render
 
 def index(request):
@@ -441,7 +450,7 @@ def index(request):
 
 - Contém uma TAG especificando que o arquivo precisará usar arquivos estáticos
   -  `{% load static %}`
-- Contém o carregamento de todos os aqruivos estáticos de personalização como CSS, Fonts, JavaScript e outros.
+- Contém o carregamento de todos os arquivos estáticos de personalização como CSS, Fonts, JavaScript e outros.
   - `<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">`
   - `<script src="{% static 'js/jquery-min.js' %}"></script>`
   - `<link rel="stylesheet" href=" {% static 'fonts/line-icons.css' %}">`
@@ -465,7 +474,7 @@ def index(request):
 
 - Contém o carregamento de arquivos estáticos
   - `{% load static %}`
-- Contém todo o código HTML responsável pela formatação do rodapé da pégina. 
+- Contém todo o código HTML responsável pela formatação do rodapé da página. 
 
 
 ### 5.16.1. HTMLs
@@ -633,7 +642,7 @@ def index(request):
 {% endblock content %}
 ```
 
-####
+#### footer
 
 ```python
 {% load static %}
@@ -708,6 +717,7 @@ def index(request):
 ```
 
 # 6. TAGS
+
 As tags fornecem lógica arbitrária no processo de renderização. Esta definição é deliberadamente vaga. Por exemplo, uma tag pode produzir conteúdo, servir como uma estrutura de controle, por exemplo, uma instrução `if` ou um loop `for`, obter conteúdo de um banco de dados ou até mesmo permitir o acesso a outras tags de modelo.
 
 As tags são circundadas por `{% e %}` (chave e porcentagem?) assim:
