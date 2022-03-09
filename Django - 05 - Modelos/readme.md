@@ -61,9 +61,9 @@ Algumas bibliotecas podem ser importantes:
 
 ## 1.1. Configurando o MySQL
 
-Altere o arquivo **settings** dentro do projeto, caso ocorra algum erro, acesse: [Erro no Django com a conexão MySQL](https://pt.stackoverflow.com/questions/395744/erro-no-django-2-2-conex%C3%A3o-com-o-mysql)
+Altere o arquivo `settings.py` dentro do projeto, caso ocorra algum erro, acesse: [Erro no Django com a conexão MySQL](https://pt.stackoverflow.com/questions/395744/erro-no-django-2-2-conex%C3%A3o-com-o-mysql)
 
-```Django
+```python
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django',
@@ -78,7 +78,7 @@ DATABASES = {
 
 ## 1.2. Configurando o PostGre
 
-```Django
+```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -91,9 +91,9 @@ DATABASES = {
 }
 ```
 
-ou então
+Ou então
 
-```Django
+```python
 DATABASES = {
     'default': dj_database_url.config()
 }
@@ -101,9 +101,9 @@ DATABASES = {
 
 # 2. ORM (Object-Relational-Mapping)
 
-Todos os nossos modelos devem ser guardados dentro do arquivo **models** dentro da aplicação, que deve ser nossa única fonte de dados.
+Todos os nossos modelos devem ser guardados dentro do arquivo `models.my` dentro da aplicação, que deve ser nossa única fonte de dados.
 
-```Django
+```python
 from django.db import models
 
 class Person(models.Model):
@@ -122,36 +122,36 @@ CREATE TABLE myapp_person (
 
 ```
 
-OBS: Como pode observar, o campo ID é gerado automaticamente, mas pode ser sobrescrito caso necessário.
+OBS: Como podemos observar, o campo ID é gerado automaticamente, mas pode ser sobrescrito caso necessário.
 
 ## 2.1. Principais Campos
 
-- **CharField** é usado para definir um tamanho fixo (médio a curto) para a string. Você deve especificar o max_length (tamanho máximo) para o dado que será armazenado.
-- **TextField** é usado para grandes strings de comprimento variado. Você pode especificar um max_length (tamanho máximo) para o campo, mas isso é usado somente quando o campo é exibido em formulários (forms) (ele não é imposto no nível do banco de dados).
-- **IntegerField** é um campo para armazenar números inteiros e para validar valores inseridos como números inteiros em formulários.
-- **DateField** e **DateTimeField** são usados para armazenar/representar datas e informações de data/hora. Esses campos também podem declarar os parâmetros (mutuamente exclusivos) auto_now = True (para definir o campo para a data atual toda vez que o modelo é salvo), auto_now_add (para definir a data em que o primeiro modelo foi criado) e default (para definir uma data padrão que pode ser substituída pelo usuário).
-- **EmailField** é usada para armazenar e validar em endereço de email.
-- **FileField** e **ImageField** são usados para carregar arquivos e imagens respectivamente, (o ImageField simplesmente valida de forma adicional que o arquivo enviado é uma imagem). Eles têm parâmetros para definir como e onde os arquivos enviados são armazenados.
-- **AutoField** é um tipo especial de IntegerField que é incrementada automaticamente. Uma chave primária desse tipo é adicionada de forma automática ao seu modelo, se você não especificar explicitamente um.
-- **ForeignKey** é usado para especificar um relacionamento um-para-muitos com outro modelo do banco de dados (por exemplo, um carro tem um fabricante, mas um fabricante pode fazer muitos carros). O lado "um" do relacionamento é o modelo que contém a "chave" (os modelos que contêm uma "chave estrangeira" referem-se a essa "chave" e estão no lado "muitos" de tal relacionamento).
-- **ManyToManyField** é usado para especificar um relacionamento muitos-para-muitos (por exemplo, um livro pode ter vários gêneros e cada gênero pode conter vários livros). Em nosso aplicativo de biblioteca, usaremos isso de maneira muito semelhante às ForeignKeys, mas elas podem ser usadas de maneiras mais complicadas para descrever as relações entre os grupos. Eles têm o parâmetro on_delete para definir o que acontece quando o registro associado é excluído (por exemplo, um valor de models.SET_NULL simplesmente definiria o valor como NULL).
+- `CharField`: É usado para definir um tamanho fixo (médio a curto) para a string. Você deve especificar o max_length (tamanho máximo) para o dado que será armazenado.
+- `TextField` é usado para grandes strings de comprimento variado. Você pode especificar um max_length (tamanho máximo) para o campo, mas isso é usado somente quando o campo é exibido em formulários (forms) (ele não é imposto no nível do banco de dados).
+- `IntegerField` é um campo para armazenar números inteiros e para validar valores inseridos como números inteiros em formulários.
+- `DateField` e `DateTimeField` são usados para armazenar/representar datas e informações de data/hora. Esses campos também podem declarar os parâmetros (mutuamente exclusivos) auto_now = True (para definir o campo para a data atual toda vez que o modelo é salvo), auto_now_add (para definir a data em que o primeiro modelo foi criado) e default (para definir uma data padrão que pode ser substituída pelo usuário).
+- `EmailField` é usada para armazenar e validar em endereço de email.
+- `FileField` e `ImageField` são usados para carregar arquivos e imagens respectivamente, (o ImageField simplesmente valida de forma adicional que o arquivo enviado é uma imagem). Eles têm parâmetros para definir como e onde os arquivos enviados são armazenados.
+- `AutoField` é um tipo especial de IntegerField que é incrementada automaticamente. Uma chave primária desse tipo é adicionada de forma automática ao seu modelo, se você não especificar explicitamente um.
+- `ForeignKey` é usado para especificar um relacionamento um-para-muitos com outro modelo do banco de dados (por exemplo, um carro tem um fabricante, mas um fabricante pode fazer muitos carros). O lado "um" do relacionamento é o modelo que contém a "chave" (os modelos que contêm uma "chave estrangeira" referem-se a essa "chave" e estão no lado "muitos" de tal relacionamento).
+- `ManyToManyField` é usado para especificar um relacionamento muitos-para-muitos (por exemplo, um livro pode ter vários gêneros e cada gênero pode conter vários livros). Em nosso aplicativo de biblioteca, usaremos isso de maneira muito semelhante às ForeignKeys, mas elas podem ser usadas de maneiras mais complicadas para descrever as relações entre os grupos. Eles têm o parâmetro on_delete para definir o que acontece quando o registro associado é excluído (por exemplo, um valor de `models.SET_NULL` simplesmente definiria o valor como NULL).
 
 ##  2.2. Os principais parâmetros dos campos
 
-- **null** - Se **True** permite valores vazios para o campo
-- **blank** - Se **True** permite valores em branco para o campo
-- **choices** - Uma sequência que consiste em iteráveis ​​de exatamente dois itens (por exemplo, [(A, B), (A, B) ...]) para usar como opções para este campo, gerando para o campo uma caixa de seleção.
-- **db_column** - O nome da coluna do banco de dados a ser usado para este campo. Se não for fornecido, Django usará o nome do campo.
-- **db_index** - Se for **True**, um índice de banco de dados será criado para este campo.
-- **default** - Define um valor padrão para o campo.
-- **editable** - Se **False**, o campo não será exibido no admin ou em qualquer outro ModelForm. Eles também são ignorados durante a validação do modelo. O padrão é **True**.
-- **error_messages** - O argumento error_messages permite que você substitua as mensagens padrão que o campo irá gerar. Passe um dicionário com chaves que correspondam às mensagens de erro que você deseja substituir.
-- **help_text** - Texto extra de ajuda para ser mostrado com o “widget” do formulário. É útil para documentar mesmo que seu campo não seja usado em um formulário.
-- **primary_key** - Se **True**, este campo será a chave-primária do seu model
-- **unique** - Se ***True***, este campo deve ser único dentro da tabela
-- **unique_for_date**, **unique_for_month**, **nique_for_year** - Defina como o nome de um DateField ou DateTimeField para exigir que este campo seja exclusivo para o valor do campo de data.
-- **verbose_name** - Um nome legível para o campo. Se o nome detalhado não for fornecido, o Django o criará automaticamente usando o nome do atributo do campo, convertendo sublinhados em espaços.
-- **validators** - Uma lista de validadores a serem executados para este campo. 
+- `null` - Se `True` permite valores vazios para o campo
+- `blank` - Se `True` permite valores em branco para o campo
+- `choices` - Uma sequência que consiste em iteráveis ​​de exatamente dois itens (por exemplo, `[(A, B), (A, B) ...]`) para usar como opções para este campo, gerando para o campo uma caixa de seleção.
+- `db_column` - O nome da coluna do banco de dados a ser usado para este campo. Se não for fornecido, Django usará o **nome do campo**.
+- `db_index` - Se for `True`, um índice de banco de dados será criado para este campo.
+- `default` - Define um valor padrão para o campo.
+- `editable` - Se `False`, o campo não será exibido no admin ou em qualquer outro ModelForm. Eles também são ignorados durante a validação do modelo. O padrão é `True`.
+- `error_messages` - O argumento `error_messages` permite que você substitua as mensagens padrão que o campo irá gerar. Passe um dicionário com chaves que correspondam às mensagens de erro que você deseja substituir.
+- `help_text` - Texto extra de ajuda para ser mostrado com o “widget” do formulário. É útil para documentar mesmo que seu campo não seja usado em um formulário.
+- `primary_key` - Se `True`, este campo será a chave-primária do seu model
+- `unique` - Se `*True`*, este campo deve ser único dentro da tabela
+- `unique_for_date`, `unique_for_month`, `nique_for_year` - Defina como o nome de um DateField ou DateTimeField para exigir que este campo seja exclusivo para o valor do campo de data.
+- `verbose_name` - Um nome legível para o campo. Se o nome detalhado não for fornecido, o Django o criará automaticamente usando o nome do atributo do campo, convertendo sublinhados em espaços.
+- `validators` - Uma lista de validadores a serem executados para este campo. 
 
 Os principais campos podem ser acessados em [Tipos de campos](https://docs.djangoproject.com/en/dev/ref/models/fields/#field-types)
 
@@ -189,7 +189,7 @@ class Cliente(models.Model):
 
 ### 2.3.3. Relacionamento N:N ManyToMany
 
-O relacionamento NN define que um item de uma tabela pode se relacionar com vários itens de uma outra tabela e vice-versa. Um exemplo seria um produto que pode ser vendido em vários pedidos e consequentemente vários pedidos poderão ter o mesmo produto. 
+O relacionamento N:N define que um item de uma tabela pode se relacionar com vários itens de uma outra tabela e vice-versa. Um exemplo seria um produto que pode ser vendido em vários pedidos e consequentemente vários pedidos poderão ter o mesmo produto. 
 
 ```python
 class Endereco(models.Model):
@@ -207,7 +207,6 @@ class Cliente(models.Model):
     # Definimos seus atributos
     endereco = models.OneToOneField(Endereco, on_delete=models.SET_NULL, null=True)
 ```
-
 
 -> O Exemplo completo pode ser acessado em: [Relacionamento 1-1, 1-N e N-N com Django](https://www.treinaweb.com.br/blog/relacionamento-1-1-1-n-e-n-n-com-django/)
 
@@ -229,7 +228,7 @@ class Restaurant(Place):
 
 ## 2.5. Classes e métodos para os nossos modelos
 
-Métodos muitas vezes retornam (return) algo. Um exemplo disto é o método __str__() que irá retornar um nome significativo para o modelo, podendo ser o nome completo do usuário, ou uma combinação de colunas do modelo.
+Métodos muitas vezes retornam (`return`) algo. Um exemplo disto é o método `__str__()` que irá retornar um nome significativo para o modelo, podendo ser o nome completo do usuário, ou uma combinação de colunas do modelo.
 
 Os métodos podem assumir várias funcionalidades extras para o modelo, como calcular_desconto  ou realizar algum tratamento de dados antes de salvar no banco de dados.
 
@@ -258,6 +257,7 @@ class Person(models.Model):
         "Returns the person's full name."
         return '%s %s' % (self.first_name, self.last_name)
 ```
+
 O exemplo acima pode ser visto com  mais detalhes em: [Models em views](https://tutorial.djangogirls.org/pt/django_models/)
 
 ```python
@@ -274,7 +274,7 @@ class Post(models.Model):
         return self.title + ' | ' + str(self.author)
 ```
 
-Também é comum sobrescrever a classe **meta** (uma classe interna em modelos Django) que funciona como contêiner de classe com algumas opções (metadados) anexadas ao modelo. 
+Também é comum sobrescrever a classe `meta` (uma classe interna em modelos Django) que funciona como contêiner de classe com algumas opções (metadados) anexadas ao modelo. 
 
 A classe define permissões disponíveis, nome da tabela de banco de dados associada, se o modelo é abstrato ou não, versões no singular e plural do nome, etc. Para saber mais acesse: [Meta](https://docs.djangoproject.com/en/dev/topics/db/models/#meta-options) ou então [Meta Completo](https://docs.djangoproject.com/en/dev/ref/models/options/)
 
@@ -293,18 +293,18 @@ class Cargo(models.Model):
 
 Um dos recursos mais úteis desses metadados é controlar a ordem padrão dos registros retornados, quando você consulta o tipo de modelo. Você faz isso especificando a ordem de correspondência em uma lista de nomes para ordenar (ordering) o atributo. A ordem dependerá do tipo de campo (os campos de caractere são classificados em ordem alfabética, enquanto os campos de data são classificados em ordem cronológica). Como mostrado acima, você pode prefixar o nome do campo com um símbolo de menos (-) para inverter a ordem de classificação.
 
-```
+```python
 ordering = ['title', '-pubdate']
 ```
 
 
 ## 2.6. Gerando os bancos de dados
 
-Para gerar os bancos de dados precisamos executar o comando **makemigrations**. Este comando irá gerar um histórico do banco e manter a integridade entre as versões. Após os testes de integridade forem checados, devemos usar o comando **migrate** para gerar as tabelas do banco. Podemos também especificar o nome de aplicação caso necessário, ao invés de executar para todas todas. 
+Para gerar os bancos de dados precisamos executar a instrução `makemigrations`. Este comando irá gerar um histórico do banco e manter a integridade entre as versões. Após os testes de integridade forem checados, devemos usar o comando `migrate` para gerar as tabelas do banco. Podemos também especificar o nome de aplicação caso necessário, ao invés de executar para todas todas. 
 
-```python
->>python manage.py makemigrations
->>python manage.py migrate
+```shell
+python manage.py makemigrations
+python manage.py migrate
 ```
 ## 2.7. ORM - Consultas
 
@@ -312,7 +312,7 @@ Podemos usar uma API para acessar os dados do nosso modelo, que contém diversas
 
 ### 2.7.1. objects.create - Criando um objeto e salvando no banco de dados
 
-O comando objects.create executa um comando SQL INSERT por detrás dos panos. O Django não acessa o banco de dados até que você chame explicitamente o método save(). O método save() não retorna um valor. Para criar e salvar um objeto em um único passo, use o método create(). 
+O comando `objects.create` executa um comando `SQL INSERT` por detrás dos panos. O Django não acessa o banco de dados até que você chame explicitamente o método `save()`. O método `save()` não retorna um valor. Para criar e salvar um objeto em um único passo, use o método `create()`. 
 
 [Criando Objetos](https://docs.djangoproject.com/pt-br/dev/ref/models/querysets/#create)
 
@@ -328,22 +328,24 @@ p.save(force_insert=True)
 ```
 
 Comando SQL
+
 ```SQL
 INSERT INTO Person VALUES('Mano', '23', 'male')
 ```
 
 Comando Django
+
 ```Python
 Person.objects.create(name="Mano", age="23", gender="male")
 ```
 
 ### 2.7.2. objects.all() - Encontrando um ou vários objetos
 
-A maneira mais simples de recuperar objeto de uma tabela é pegar todos eles. Para fazer isso, use o método all() na Manager:
+A maneira mais simples de recuperar objeto de uma tabela é pegar todos eles. Para fazer isso, use o método `all()` na Manager:
 
-    A Manager é a principal fonte de QuerySets para um modelo. Por exemplo, Blog.objects.all() retorna uma QuerySet que contém todos os objetos do tipo Blog do banco de dados.
+ A Manager é a principal fonte de QuerySets para um modelo. Por exemplo, `Blog.objects.all()` retorna uma `QuerySet` que contém todos os objetos do tipo `Blog` do banco de dados.
 
-    Os Managers são acessíveis somente através das classes de modelo, e não de instâncias de modelos, para reforçar a separação entre operações no “nível das tabelas” e operações no “nível dos registros”.
+Os Managers são acessíveis somente através das classes de modelo, e não de instâncias de modelos, para reforçar a separação entre operações no “nível das tabelas” e operações no “nível dos registros”.
 
 ```python
 all_entries = Person.objects.all()
@@ -369,42 +371,52 @@ for person in persons:
 ### 2.7.3. objects.only() - Consultando apenas alguma colunas
 
 Comando em SQL
+
 ```SQL
 SELECT name, age FROM Person;
 ```
+
 Comando em Django
+
 ```python
 Person.objects.only('name', 'age')
 ```
 
 ### 2.7.4. objects.values().distinct() - Selecionado apenas os dados distintos
+
 Consulta SQL
+
 ```SQL
 SELECT DISTINCT name, age FROM Person;
 ```
+
 Comando Django
+
 ```python
 Person.objects.values('name', 'age').distinct()
 ```
 
 ### 2.7.5. Limit e Offset - Consultando um número específico de linhas
 
-Entretanto podemos limitar as consultas de uma consulta, que pode ser usada para criar, por exemplo, o conceito de **PAGINAÇÃO**. Se um subconjunto da syntax de fatias de array Python para limitar seu QuerySet para um certo número de resultados. Este é o equivalente às cláusulas SQL Limit e OFFSET.
+Entretanto podemos limitar as consultas de uma consulta, que pode ser usada para criar, por exemplo, o conceito de **PAGINAÇÃO**. Se um subconjunto da syntax de fatias de array Python para limitar seu QuerySet para um certo número de resultados. Este é o equivalente às cláusulas SQL `Limit` e `OFFSET`.
 
 Comando SQL
+
 ```SQL
 SELECT * FROM Person LIMIT 5;
 SELECT * FROM Person OFFSET 5 LIMIT 5;
 ```
 
 Comando Django
+
 ```python
 Limit5 = Person.objects.all()[:5]
 offset5_limit5 = Person.objects.all()[5:10]
 ```
+
 ### 2.7.6. objects.get - Recuperando um único Objeto
 
-O filter() sempre lhe dará um QuerySet, mesmo se um único objeto combina com a consulta - neste caso, ele será uma QuerySet que contém um único elemento.Se você sabe que somente um objeto combina com sua consulta, você pode usar o método get() em uma Manager o qual retorna o objeto diretamente:
+O `filter()` sempre lhe dará um QuerySet, mesmo se um único objeto combina com a consulta - neste caso, ele será uma QuerySet que contém um único elemento. Se você sabe que somente um objeto combina com sua consulta, você pode usar o método `get()` em uma Manager o qual retorna o objeto diretamente:
 
 ```python
 one_entry = Entry.objects.get(pk=1)
@@ -414,36 +426,40 @@ one_entry = Entry.objects.get(pk=1)
 
 Para criar o subconjunto, você refina o QuerySet inicial, adicionando filtros de condições. As duas maneiras mais comuns de refinar um QuerySet são:
 
-- filter(**kwargs)
+- `filter(**kwargs)`
     - Retorna uma nova QuerySet contendo objetos que combinem com os parâmetros de filtros dados.
-- exclude(**kwargs)
+- `exclude(**kwargs)`
     - Retornam uma nova QuerySet contendo objetos que não combinem com os parâmetros de filtros dados. 
 
 ```python
 selected_entries = Entry.objects.filter(pub_date__year=2006)
 no_selected_entries = Entry.objects.all().filter(pub_date__year=2006)
 ```
+
 O resultado de um refinamento de uma QuerySet é ela mesma: uma QuerySet, tal que é possível encadear refinamentos. Por exemplo:
 
 ```python
 selected_entries = Entry.objects.filter( headline__startswith='What').exclude(pub_date__gte=datetime.date.today()).filter(pub_date__gte=datetime.date(2005, 1, 30))
 ```
-    QuerySets são preguiçosos (“lazy”) – o ato de criar uma QuerySet não envolve nenhuma atividade no banco de dados. Você pode empilhar filtros o dia inteiro, e o Django não irá executar a consulta realmente até que a QuerySet seja interpretada.
+
+ QuerySets são preguiçosos (“lazy”) – o ato de criar uma QuerySet não envolve nenhuma atividade no banco de dados. Você pode empilhar filtros o dia inteiro, e o Django não irá executar a consulta realmente até que a QuerySet seja interpretada.
 
 Comando SQL
+
 ```SQL
 SELECT * FROM Person WHERE id = 1
 ```
 
 Comando Django
+
 ```Django
 Person.objects.filter(id=1)
 ```
 
-
 #### 2.7.7.1. Filtrando pelos operadores de comparação
 
 Comandos SQL
+
 ```SQL
 WHERE age > 18;
 WHERE age >= 18;
@@ -453,6 +469,7 @@ WHERE age != 18;
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(age__gt=18)
 Person.objects.filter(age__gte=18)
@@ -464,11 +481,13 @@ Person.objects.exclude(=18)
 #### 2.7.7.2. Filtrando com o operador Between
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM Person WHERE age BETWEEN 10 AND 20;
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(age__range=(10,20))
 ```
@@ -476,6 +495,7 @@ Person.objects.filter(age__range=(10,20))
 #### 2.7.7.3. Filtrando com o operador LIKE
 
 Comandos SQL
+
 ```SQL
 WHERE name LIKE '%A%';
 WHERE name LIKE 'A%';
@@ -483,6 +503,7 @@ WHERE name LIKE '%A';
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(name__icontains='A')
 Person.objects.filter(name__istartswith='A')
@@ -492,11 +513,13 @@ Person.objects.filter(name__iendswith='A')
 #### 2.7.7.4. Filtrando com o operador IN
 
 Comandos SQL
+
 ```SQL
 WHERE id IN (1,2);
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(id__in=[1,2])
 ```
@@ -504,11 +527,13 @@ Person.objects.filter(id__in=[1,2])
 #### 2.7.7.5. Filtrando com o operador AND
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM PERSON WHERE gender='male' AND age > 25;
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(gander='male', age__gt=25)
 ```
@@ -516,24 +541,28 @@ Person.objects.filter(gander='male', age__gt=25)
 #### 2.7.7.6. Filtrando com o operador OR
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM PERSON WHERE gender='male' OR age > 25;
 ```
 
 Comandos Django
+
 ```Python
-FROM django.db.models import Q
+from django.db.models import Q
 Person.objects.filter(Q(gander='male') | Q(age__gt=25))
 ```
 
 #### 2.7.7.7. Filtrando com o operador NOT
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM PERSON WHERE NOT gender='male';
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.exclude(gander='male')
 ```
@@ -541,11 +570,13 @@ Person.objects.exclude(gander='male')
 #### 2.7.7.8. Filtrando com o operador NULL
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM PERSON WHERE age IS NULL;
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(age__isnull=True)
 # OU 
@@ -555,11 +586,13 @@ Person.objects.filter(age=None)
 #### 2.7.7.9. Filtrando com o operador NOT NULL
 
 Comandos SQL
+
 ```SQL
 SELECT * FROM PERSON WHERE age IS NOT NULL;
 ```
 
 Comandos Django
+
 ```Python
 Person.objects.filter(age__isnull=False)
 # OU 
@@ -578,12 +611,14 @@ Entry.objects.order_by('?')
 ```
 
 Comando SQL
+
 ```SQL
 SELECT * FROM Person ORDER BY age;
 SELECT * FROM Person ORDER BY age DESC;
 ```
 
 Comando Django
+
 ```python
 Person.objects.order_by('age')
 Person.objects.order_by('-age')
@@ -592,13 +627,15 @@ Person.objects.order_by('-age')
 ### 2.7.9. UPDATE
 
 Comando SQL
+
 ```SQL
 UPDATE Person SET age = 20 WHERE id = 1;
-#Múltiplas Linhas
+-- Múltiplas Linhas
 UPDATE Person SET age = age * 1.5ç
 ```
 
 Comando Django
+
 ```Python
 person = Person.objects.get(id=1)
 person.age = 20
@@ -608,16 +645,17 @@ from django.db.models import F
 Person.objects.update(age=F('age')*1.5)
 ```
 
-
 ### 2.7.10. DELETE
 
 Comando SQL
+
 ```SQL
 DELETE FROM Person;
 DELETE FROM Person WHERE age < 10;
 ```
 
 Comando Django
+
 ```Python
 Person.objects.all().delete()
 Person.objects.filter(age_lt=10).delete()
@@ -634,6 +672,7 @@ SELECT COUNT(*) FROM Person;
 ```
 
 Comando Django
+
 ```Python
 from django.db.models import Min, Max, Avg, Sum
 
@@ -656,16 +695,19 @@ SELECT gender, COUNT(*) AS count FROM Person GROUP BY gender;
 ```
 
 Comando Django
+
 ```Python
 Person.objects.values('gender').annotate(count=Count('gender'))
 ```
 
 #### 2.7.11.1. HAVING
+
 ```SQL
 SELECT gender, COUNT(*) AS count FROM Person GROUP BY gender HAVING count > 1;
 ```
 
 Comando Django
+
 ```Python
 Person.objects.values('gender').annotate(count=Count('gender')).values('gender', 'count').filter(count_gt=1)
 ```
@@ -690,7 +732,6 @@ lname = 'Doe'
 >>> Person.objects.raw('SELECT * FROM myapp_person WHERE last_name = %s', [lname])
 ```
 
-
 #### 2.7.12.2. Referências completas de ORM Django
 
 - [Consultas](https://docs.djangoproject.com/en/dev/topics/db/queries/)
@@ -701,6 +742,7 @@ lname = 'Doe'
 ## 2.8. Exemplo de Views e Models
 
 - urls.py
+  
 ```python
 from .views import index, produto
 
@@ -713,6 +755,7 @@ urlpatterns = [
 ```
 
 - models.py
+  
 ```python
 class Produto(models.Model):
   #models.tipoDeDados CharField("label", tamanho máximo)
@@ -726,6 +769,7 @@ class Produto(models.Model):
 ```
 
 - views.py
+  
 ```python
 from .models import Produto
 
@@ -739,6 +783,7 @@ def index(request):
 ```
 
 - index.html
+  
 ```Django
 {% load static %}
 <!DOCTYPE html>
@@ -777,6 +822,7 @@ def index(request):
 #### 2.8.0.1. Rota produto
 
 - views.py
+  
 ```python
 def produto(request, pk):
   produtos = Produto.objects.get(id=pk)
@@ -816,6 +862,7 @@ def produto(request, pk):
 </body>
 </html>
 ```
+
 ## ModelForms
 
 Se você está construindo uma aplicação baseada em banco de dados, existe uma grande chance de que seus formulários corresponderão com os seus modelos Django. Neste caso, seria redundante definir os tipos de campo no seu formulário, porque isso já foi feito no seu modelo. Por este motivo, o Django disponibiliza uma classe de ajuda que possibilita a criação de uma classe Form a partir de um modelo Django.
@@ -823,16 +870,17 @@ Se você está construindo uma aplicação baseada em banco de dados, existe uma
 FONTE (Criando formulários a partir de models)[https://django-portuguese.readthedocs.io/en/1.0/topics/forms/modelforms.html]
 
 **Possui os mesmos campos e atributos que os formulários, com algumas observações!**
-- ForeignKey é representado por django.forms.ModelChoiceField, que é um ChoiceField em que choices é um QuerySet do modelo.
-- ManyToManyField é representado por django.forms.ModelMultipleChoiceField, que é um MultipleChoiceField em que choices é um QuerySet do modelo.
-- O atributo label do campo de formulário será igual ao verbose_name do campo de modelo, com o primeiro caractere em maiúsculo
-- Se um campo de modelo tem blank=True, então o valor de required será False no campo de formulário. Caso contrário, required=True.
-- O help_text do campo de formulário é igual ao help_text do campo de modelo.
+- `ForeignKey` é representado por `django.forms.ModelChoiceField`, que é um ChoiceField em que choices é um QuerySet do modelo.
+- `ManyToManyField` é representado por django.forms.`ModelMultipleChoiceField`, que é um MultipleChoiceField em que choices é um QuerySet do modelo.
+- O atributo `label` do campo de formulário será igual ao `verbose_name` do campo de modelo, com o primeiro caractere em maiúsculo
+- Se um campo de modelo tem `blank=True`, então o valor de `required` será `False` no campo de formulário. Caso contrário, `required=True`.
+- O `help_text` do campo de formulário é igual ao `help_text` do campo de modelo.
 - Se o campo de modelo tem o atributo choices definido, então o widget do campo de formulário será o Select, com a lista de opções vindas do atributo choices do campo de modelo. As opções normalmente incluirão o valor em branco, que é selecionado por padrão. Se o campo é requerido, isso força o usuário a fazer uma escolha. O valor em branco não será incluído se o campo de modelo tem atributo blank=False e um valor de default explícito (em vez disso o valor de default será selecionado inicialmente).
 
 Exemplos:
 
 Arquivo models.py
+
 ```Python
 from django.db import models
 
@@ -872,7 +920,7 @@ class BookForm(ModelForm):
 
 ### O Método Save
 
-Este método `save()` aceita um argumento nomeado opcional commit, que aceita ou True ou False. Se você chamar `save()` com commit=False, então ele devolverá um objeto que ainda não foi gravado no banco de dados. Neste caso, é sua responsabilidade chamar `save()` na instância de modelo. Isso é útil se você quer fazer algum processamento customizado no objeto antes de gravá-lo, ou se você quer usar um umas das opções de gravação de modelo especializadas. commit é True por padrão.
+Este método `save()` aceita um argumento nomeado opcional commit, que aceita ou True ou False. Se você chamar `save()` com `commit=False`, então ele devolverá um objeto que ainda não foi gravado no banco de dados. Neste caso, é sua responsabilidade chamar `save()` na instância de modelo. Isso é útil se você quer fazer algum processamento customizado no objeto antes de gravá-lo, ou se você quer usar um umas das opções de gravação de modelo especializadas. commit é `True` por padrão.
 
 ### Especificando Campos do Modelo no Formulário
 
