@@ -1,25 +1,31 @@
-# Deploy 
+# 1. Deploy 
 
-Conceitos
+- [1. Deploy](#1-deploy)
+  - [1.1. Conceitos](#11-conceitos)
+  - [1.2. Deploy Heroku](#12-deploy-heroku)
+    - [1.2.1. Fluxo](#121-fluxo)
+    - [1.2.2. Possíveis Erros :](#122-possíveis-erros-)
+
+## 1.1. Conceitos
 - **Ambiente de Produção** - O ambiente de produção é o ambiente fornecido pelo computador/servidor onde você executará seu site para consumo externo
   - um ambiente de produção incluí, hardware de computador, um sistema operacional, uma linguagem em tempo de produção, um servidor web, um servidor de aplicação e um banco de dados. 
 - **Infraestrutura como Serviço (IaaS)** - São ambientes remotos que fornecem hardware e rede a um determinado preço. Ou seja, deve-se escolher o hardware, Sistema operacional, o servidor web, etc. 
 - **Plataforma como Serviço (PaaS)** - você não precisa se preocupar com a maior parte do seu ambiente de produção (servidor da web, servidor de aplicativos, balanceadores de carga), pois a plataforma host cuida disso para você (junto com a maior parte do que você precisa fazer para para dimensionar seu aplicativo)
 
-## Deploy Heroku
+## 1.2. Deploy Heroku
 
 Alguma considerações, 
-    - Deve-se ter configurado corretamente os arquivos estáticos com o whitenoise ou dj-static. 
+    - Deve-se ter configurado corretamente os arquivos estáticos com o `whitenoise` ou `dj-static`. 
     - Deve desativar o atributo `DEGUB = False` no arquivo settings do projeto. 
-    - Deve-se permiter todos os HOST `ALLOWED_HOSTS = ['*']`, e definir posteriormente apenas o HOTS do Heroku como válido. 
+    - Deve-se permitir todos os HOST `ALLOWED_HOSTS = ['*']`, e definir posteriormente apenas o `HOTS` do Heroku como válido. 
 
-Fluxo 
+### 1.2.1. Fluxo 
 
 1. Baixe o Heroku CLI
 2. Faça login localmente com `heroku login`
-3. Crie uma aplicação com nome aleatório com `heroku create`
+3. Crie uma aplicação com nome aleatório com `heroku create <name_app>`
 4. Vinculando nosso repositório git com nosso aplicativo Heroku com `heroku git:remote -a NOMEAPP`
-5. Instale o Servidor de Aplicativo `pip install gunicorn`. (Atualmente o servidor de desenvolvimento é python mange.py runserver )
+5. Instale o Servidor de Aplicativo `pip install gunicorn`. (Atualmente o servidor de desenvolvimento é `python mange.py runserver` )
 6. Vamos testar nosso servidor de aplicativos. Execute o comando `gunicorn projeto.wsgi` dentro do diretório do projeto. 
 7. [Crie um perfil](https://devcenter.heroku.com/articles/procfile)
    - Os aplicativos Heroku incluem um Perfil que especifica os comandos que são executados pelo aplicativo na inicialização. 
@@ -37,6 +43,6 @@ Fluxo
     1.  `git push heroku master`
 
 
-Erros : 
+### 1.2.2. Possíveis Erros : 
 - [Collectstatic error while deploying Django app to Heroku](https://stackoverflow.com/questions/36665889/collectstatic-error-while-deploying-django-app-to-heroku)
 - [How to deploy a Django app to Heroku](https://dev.to/undefinedzack/how-to-deploy-a-django-app-to-heroku-3k6i)
