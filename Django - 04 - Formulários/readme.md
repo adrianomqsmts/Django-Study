@@ -1,4 +1,4 @@
-# Formulários
+# 1. Formulários
 
 Um Formulário HTML é um grupo de um ou mais campos/widgets em uma página web, que podem ser utilizados para coletar informações dos usuários para submetê-las a um servidor.
 
@@ -6,7 +6,31 @@ Formulários são também um meio relativamente seguro de compartilhar dados com
 
 FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Forms)
 
-## Revisão HTML
+- [1. Formulários](#1-formulários)
+  - [1.1. Revisão HTML](#11-revisão-html)
+- [2. Fluxograma](#2-fluxograma)
+- [3. Criando um Formulário](#3-criando-um-formulário)
+  - [3.1. Campos de formulários Django](#31-campos-de-formulários-django)
+  - [3.2. Os principais parâmetros dos campos](#32-os-principais-parâmetros-dos-campos)
+  - [3.3. Widgets](#33-widgets)
+    - [3.3.1. Lista de Widgets](#331-lista-de-widgets)
+  - [3.4. Alterando o HTML](#34-alterando-o-html)
+- [4. Exibindo Formulários nos Templates](#4-exibindo-formulários-nos-templates)
+  - [4.1. Formulário HTML](#41-formulário-html)
+  - [4.2. Formulário Django-HTML](#42-formulário-django-html)
+  - [4.3. Formulário Django-HTML (Menos HTML)](#43-formulário-django-html-menos-html)
+  - [4.4. Formulário Django](#44-formulário-django)
+  - [4.5. Mensagem de Erro](#45-mensagem-de-erro)
+  - [4.6. Textos de Ajuda](#46-textos-de-ajuda)
+  - [4.7. Iterar Sobre um Formulário](#47-iterar-sobre-um-formulário)
+- [5. FormView](#5-formview)
+    - [5.0.1. Enviando os dados](#501-enviando-os-dados)
+    - [5.0.2. Exemplos](#502-exemplos)
+- [6. Mensagens de Erro e Sucesso](#6-mensagens-de-erro-e-sucesso)
+  - [6.1. Exibindo a mensagem no Template](#61-exibindo-a-mensagem-no-template)
+  - [6.2. SuccessMessageMixin](#62-successmessagemixin)
+
+## 1.1. Revisão HTML
 
 ```html
 <form action="/team_name_url/" method="post">
@@ -27,7 +51,7 @@ FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.
 
 FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Forms)
 
-# Fluxograma
+# 2. Fluxograma
 
 1. Exiba o formulário padrão na primeira vez em que for solicitado pelo usuário 
 2. Receba dados de uma solicitação de envio e vincule-os ao formulário. 
@@ -36,7 +60,7 @@ FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.
 5. Se todos os dados forem válidos, execute as ações necessárias
 6. Quando todas as ações estiverem concluídas, redirecione o usuário para outra página.
 
-# Criando um Formulário
+# 3. Criando um Formulário
 
 Primeiro precisamos criar um arquivo chamado `forms.py` que irá armazenar todos os formulários da nossa aplicação. 
 
@@ -51,7 +75,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 ```
 
-## 10.1. Campos de formulários Django
+## 3.1. Campos de formulários Django
 
 Para criar um formulário, precisamos ver todas as possibilidades de campos possível em [Campos de formulários](https://docs.djangoproject.com/en/dev/ref/forms/fields/).
 
@@ -90,7 +114,7 @@ Os principais campos de um formulários são:
 - [ModelChoiceField](https://docs.djangoproject.com/en/dev/ref/forms/fields/#modelchoicefield)
 
 
-## Os principais parâmetros dos campos
+## 3.2. Os principais parâmetros dos campos
 
 Os parâmetros mais comuns que usamos para definir os campos são:
 
@@ -108,7 +132,7 @@ Os parâmetros mais comuns que usamos para definir os campos são:
 
 Para ver mais detalhes acesse [Campos de formulários e seus argumentos](https://docs.djangoproject.com/pt-br/dev/ref/forms/fields/#core-field-arguments)
 
-## Widgets
+## 3.3. Widgets
 
 Além dos campos, temos também os **widgets** que é a forma como o html é apresentado. Cada campo acima tem um widget padrão, mas podemos alterar como o campo é exibido na tela. Para ver a lista completa de widget e seus usos, acesse: [widgts](https://docs.djangoproject.com/en/dev/ref/forms/widgets/).
 
@@ -123,7 +147,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 ```
 
-### Lista de Widgets 
+### 3.3.1. Lista de Widgets 
 
 - `TextInput`
   - `input_type: 'text'`
@@ -193,7 +217,7 @@ Para um controle maior sobre a marcação gerada, você pode repetir os botões 
 
 [Lista Completa](https://docs.djangoproject.com/en/dev/ref/forms/widgets/)
 
-## Alterando o HTML
+## 3.4. Alterando o HTML
 
 Ainda podemos especificar atributos HTML dentro de um `widget.attr`
 
@@ -216,11 +240,11 @@ class CommentForm(forms.Form):
     comment.widget.attrs.update(size='40')
 ```
 
-# Exibindo Formulários nos Templates
+# 4. Exibindo Formulários nos Templates
 
 Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% com HTML, enquanto no outro extremo podemos inserir o formulário usando apenas um comandos Django
 
-## Formulário HTML
+## 4.1. Formulário HTML
 
 ```Html
 <p>
@@ -241,7 +265,7 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 </p>
 ```
 
-## Formulário Django-HTML
+## 4.2. Formulário Django-HTML
 
 - `form.campo.id_for_label` - Contém o ID do campo
 - `form.campo.errors` - Irá exibir os `errors` do campo caso haja algum erro ou mensagem de erro atribuída ao erro gerado.
@@ -271,7 +295,7 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 </div>
 ```
 
-## Formulário Django-HTML (Menos HTML)
+## 4.3. Formulário Django-HTML (Menos HTML)
 - `form.subject.label_tag` - contém todo o elemento `<label>`, com o atributo `for` e `name`.
 
 ```Django 
@@ -298,7 +322,7 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 </div>
 ```
 
-## Formulário Django
+## 4.4. Formulário Django
 
 Podemos gerar um fomulário criado, usando apenas uma linha de código.
 
@@ -316,7 +340,7 @@ Podemos gerar um fomulário criado, usando apenas uma linha de código.
 </form>
 ```
 
-## Mensagem de Erro
+## 4.5. Mensagem de Erro
 
 Os erros de um único campo são exibidos seguindo o código abaixo, podendo ser alterado para mudar a sua forma de exibição de forma mais personalizada.
 
@@ -330,7 +354,7 @@ Os erros de um único campo são exibidos seguindo o código abaixo, podendo ser
 {% endif %}
 ```
 
-## Textos de Ajuda
+## 4.6. Textos de Ajuda
 
 Muitas vexes o texto de ajuda pode ser grande e conter muitos dados, como senhas que podem conter vários critérios. Para isso, podemos usar o código abaixo para exibir o erro de forma formatada.
 
@@ -340,7 +364,7 @@ Muitas vexes o texto de ajuda pode ser grande e conter muitos dados, como senhas
   {% endif %}
 ```
 
-## Iterar Sobre um Formulário
+## 4.7. Iterar Sobre um Formulário
 
 Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para saber mais, além de descrição das propriedades dos campos acesse [Looping over the form’s fields](https://stackoverflow.com/questions/19123715/django-for-loop-to-iterate-form-fields)
 
@@ -356,7 +380,7 @@ Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para 
 {% endfor %}
 ```
 
-# FormView
+# 5. FormView
 
 - É uma view que mostra um formulário. Caso tenha um erro da validação é exibido o formulário com os erros para se corrido. Caso o formulário passe pela validação é direcionado para uma nova URL.
 - Essa view herda métodos e atributos das seguintes `views`:
@@ -375,7 +399,7 @@ Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para 
   - `django.views.generic.edit.ProcessFormView`
   - `django.views.generic.base.View`
 
-### Enviando os dados
+### 5.0.1. Enviando os dados
 
 Os métodos `post` e `get` podem enviar os dados dos formulário para outras Views, e possuem a seguinte sintaxe. 
 
@@ -393,7 +417,7 @@ def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {'form': form})
 ```
 
-### Exemplos
+### 5.0.2. Exemplos
 
 ```python
 from django.views.generic import FormView
@@ -474,7 +498,7 @@ class success(TemplateView):
   template_name = "success.html"
 ```
 
-# Mensagens de Erro e Sucesso
+# 6. Mensagens de Erro e Sucesso
 
 Tipos de mensagens
 - `DEBUG` - Mensagens relacionadas ao desenvolvimento que serão ignoradas (ou removidas) em uma implantação de produção
@@ -502,7 +526,7 @@ messages.warning(request, 'Your account expires in three days.')
 messages.error(request, 'Document deleted.')
 ```
 
-## Exibindo a mensagem no Template
+## 6.1. Exibindo a mensagem no Template
 
 ```Django
 {% if messages %}
@@ -518,7 +542,7 @@ Se você estiver usando o processador de contexto, seu modelo deve ser renderiza
 
 Mesmo se você souber que há apenas uma mensagem, você ainda deve iterar sobre a sequência de mensagens, caso contrário, o armazenamento da mensagem não será limpo para a próxima solicitação.
 
-## SuccessMessageMixin
+## 6.2. SuccessMessageMixin
 
 Adiciona um atributo de mensagem de sucesso às classes baseadas em FormView 
 
