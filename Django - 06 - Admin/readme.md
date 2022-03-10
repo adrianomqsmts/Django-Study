@@ -1,6 +1,5 @@
 # Página de Administração
 
-
 - [Tutorial Django Parte 4: Django admin site](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Admin_site)
 - [Django Dashboards - Open-Source and Free ](https://dev.to/sm0ke/django-admin-dashboards-open-source-and-free-1o80)
 - [Django Admin: melhora na interface de administração](https://www.devmedia.com.br/django-admin-melhora-na-interface-de-administracao/30133)
@@ -11,9 +10,11 @@ O Django oferece uma interface de administração quer permite listar um conjunt
 
  O projeto Django o recomenda apenas para gerenciamento interno de dados (ou seja, apenas para uso por administradores ou pessoas internas à sua organização), pois a abordagem centrada no modelo não é necessariamente a melhor interface possível para todos os usuários e expõe muitos detalhes desnecessários sobre os modelos.
 
- ## Criando Modelo
 
- - Os modelos dos dados precisam estar criados, para o exemplo usaremos o modelo de um produto. 
+
+## Criando Modelo
+
+- Os modelos dos dados precisam estar criados, para o exemplo usaremos o modelo de um produto. 
 
 ```python
 ffrom re import T
@@ -77,14 +78,13 @@ class Game_Platform(models.Model):
 
     def __str__(self):
         return f'{self.game}|{self.platform}'
-
 ```
 
  ## Criando Super Usuário
 
- - Antes é preciso construir o versionamento e construir o banco de dados com so comandos abaixo.
+ - Antes é preciso construir o versionamento e construir o banco de dados com os comandos abaixo.
 
-``` shell
+```shell
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -102,9 +102,9 @@ python3 manage.py createsuperuser
 
   !['ola']('./../img/dj.png)
 
- ## Registrando Modelo
+## Registrando Modelo
 
- A forma mais simples, principalmente para testes, de cadastrar um objeto na área de administração é registrar o objeto com a sintaxe `admin.site.register(Modelo)`. 
+A forma mais simples, principalmente para testes, de cadastrar um objeto na área de administração é registrar o objeto com a sintaxe `admin.site.register(Modelo)`. 
 
 ```python
 from django.contrib import admin
@@ -116,6 +116,7 @@ admin.site.register(Game)
 admin.site.register(Media)
 admin.site.register(Game_Platform)
 ```
+
 E então o produto irá aparecer dentro da interface. 
 
  !['ola']('./../img/django-adm1.png)
@@ -126,11 +127,11 @@ E então o produto irá aparecer dentro da interface.
 
  !['ola']('./../img/django-adm2.png)
 
- ## Nome De listagem do Objeto
+## Nome De listagem do Objeto
 
- - Após o cadastro dos objetos, poderemos ver uma lista com os objetos cadastrados, entretanto irá, por padrão exibir o nome do objeto. 
+- Após o cadastro dos objetos, poderemos ver uma lista com os objetos cadastrados, entretanto irá, por padrão, exibir o nome do objeto. 
  
-- Para definir o nome do objeto, em modelos podemos usar a função `__str__()` para retornar o texto que desejamos. 
+- Para definir o nome do objeto, em modelos, podemos usar a função `__str__()` para retornar o texto que desejamos. 
 
 ``` python
 class Game_Platform(models.Model):
@@ -147,20 +148,20 @@ class Game_Platform(models.Model):
         return f'{self.game}|{self.platform}'
 ```
 
- !['ola']('./../img/django-adm3.png)
+!['ola']('./../img/django-adm3.png)
 
 
 ## Atributos
 
-- O ModelAmin possui diversos atributos que nos permitem personalizar o CRUD dos objetos na área administrativa. 
+- O `ModelAmin` possui diversos atributos que nos permitem personalizar o CRUD dos objetos na área administrativa. 
 
 ### Listar Informações dos dados
 
 - Caso queria que mais colunas apareçam, com outros dados do objeto, devemos criar um model admin e associá-lo ao modelo com o register após a definição da classe. 
   - `admin.site.register(Produto, ProdutoAdmin)`
-- Outra forma é usar decorator, acima da classe de administração. 
+- Outra forma é usar `decorators`, acima da classe de administração. 
   - `@admin.register(Produto)`
-- O argumento list_display irá receber uma lista com o nome dos campos que devem aparecer na área de administração.
+- O argumento `list_display` irá receber uma lista com o nome dos campos que devem aparecer na área de administração.
 
 ``` python
 @admin.register(Game_Platform)
@@ -168,7 +169,7 @@ class Game_Platform(admin.ModelAdmin):
   list_display = ['game', 'platform', 'quantity', 'year_release']
 ```
 
- !['ola']('./../img/django-adm4.png)
+!['ola']('./../img/django-adm4.png)
 
 
 ### Formulário Personalizado 
@@ -176,7 +177,7 @@ class Game_Platform(admin.ModelAdmin):
 - Caso você queria usar um formulário personalizado para a administração, basta seguir os passos
   1. Criar um formulário que receba um modelo 
   2. Personalizar os campos, como alterar os widgets
-  3. Sobrescreva  o campo `form` da classe ModelAdmin com o novo formulário. 
+  3. Sobrescreva o campo `form` da classe ModelAdmin com o novo formulário. 
 
 ``` python
 from django.contrib import admin
@@ -204,8 +205,9 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 ### Definindo Filtros
 
-- Usando a opção `list_filter` podemos definir quais campos do objeto terão um filtro de pesquisa. O filtro se ajusta automáticamente ao tipo dos dados. 
-- Filtros funciona melhor para dados categóricos, como tipo de produtos, marcas, etc.
+- Usando a opção `list_filter` podemos definir quais campos do objeto terão um filtro de pesquisa. O filtro se ajusta automaticamente ao tipo dos dados. 
+- Filtros funciona melhor para **dados categóricos**, como tipo de produtos, marcas, etc.
+  
 ``` python
 @admin.register(Game_Platform)
 class ProdutoAdmin(admin.ModelAdmin):
@@ -220,14 +222,14 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 ### Navegação por Datas 
 
-- Defina `date_hierarchy` como o nome de um DateField ou DateTimeField em seu modelo, e a página da lista de alterações incluirá uma navegação detalhada baseada em data por esse campo. 
+- Defina `date_hierarchy` como o nome de um `DateField` ou `DateTimeField` em seu modelo, e a página da lista de alterações incluirá uma navegação detalhada baseada em data por esse campo. 
   - `date_hierarchy = 'pub_date'`
 - Você também pode especificar um campo em um modelo relacionado usando a pesquisa `__`
   - `date_hierarchy = 'author__pub_date'`
 
 ### Valor Parão para Valores Nulos 
 
-Este atributo substitui o valor de exibição padrão para os campos do registro que estão vazios (Nenhum, string vazia, etc.). O valor padrão é - (um traço).
+Este atributo substitui o valor de exibição padrão para os campos do registro que estão vazios (Nenhum, string vazia, etc.). O valor padrão é `-` (um traço).
 
 ``` python
 from django.contrib import admin
@@ -249,12 +251,13 @@ class ProdutoAdmin(admin.ModelAdmin):
   exclude = ( 'platform',)
 ```
 
- !['ola']('./../img/django-adm7.png)
+!['ola']('./../img/django-adm7.png)
 
 ### Agrupar Campos
 
 Use a opção de `fields` para fazer alterações de layout simples nos formulários nas páginas `adicionar` e `alterar`, como mostrar apenas um subconjunto de campos disponíveis, modificar sua ordem ou agrupá-los em linhas.
 - Para agrupar os campos em uma mesma linha, deve-se, envolvê-los entre parênteses.  
+
 ```Python
 @admin.register(Game_Platform)
 class ProdutoAdmin(admin.ModelAdmin):
@@ -267,12 +270,12 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 ### Personalizar Campos com Fieldset 
 
-Defina os conjuntos de campos para controlar o layout das páginas de 'adição' e 'alteração' do administrador. Fieldsets é uma lista de duas tuplas, em que cada duas tuplas representa um `<fieldset>` na página do formulário de administração. (Um `<fieldset>` é uma 'seção' do formulário.)
+Defina os conjuntos de campos para controlar o layout das páginas de 'adição' e 'alteração' do administrador. `Fieldsets` é uma lista de duas tuplas, em que cada duas tuplas representa um `<fieldset>` na página do formulário de administração. (Um `<fieldset>` é uma 'seção' do formulário.)
 - As duas tuplas estão no formato `(name, field_options)`, onde name é uma string que representa o título do fieldset e field_options é um dicionário de informações sobre o fieldset, incluindo uma lista de campos a serem exibidos nele.
 - O dicionário `field_options` pode ter as seguintes chaves:
-  - field -  Uma tupla de nomes de campo a serem exibidos neste conjunto de campos. Essa chave é obrigatória.
-  - class -   Uma lista ou tupla contendo classes CSS extras para aplicar ao fieldset.
-  - Description -  Uma string de texto extra opcional a ser exibida na parte superior de cada fieldset, sob o título do fieldset. Esta string não é renderizada para TabularInline devido ao seu layout.
+  - `field` -  Uma tupla de nomes de campo a serem exibidos neste conjunto de campos. Essa chave é obrigatória.
+  - `class` -   Uma lista ou tupla contendo classes CSS extras para aplicar ao fieldset.
+  - `Description` -  Uma string de texto extra opcional a ser exibida na parte superior de cada fieldset, sob o título do fieldset. Esta string não é renderizada para TabularInline devido ao seu layout.
 
 ```Python
 @admin.register(Game_Platform)
@@ -292,7 +295,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 ### Personalizar ManyToManyField
 
-Por padrão, um ManyToManyField é exibido no site de administração com um `<selecionar múltiplo>`. No entanto, as caixas de seleção múltipla podem ser difíceis de usar ao selecionar muitos itens. Adicionar um ManyToManyField a esta lista, em vez disso, usará uma interface de 'filtro' JavaScript discreta e bacana que permite pesquisar nas opções. As opções não selecionadas e selecionadas aparecem em duas caixas lado a lado. 
+Por padrão, um `ManyToManyField` é exibido no site de administração com um `<selecionar múltiplo>`. No entanto, as caixas de seleção múltipla podem ser difíceis de usar ao selecionar muitos itens. Adicionar um `ManyToManyField` a esta lista, em vez disso, usará uma interface de 'filtro' JavaScript discreta e bacana que permite pesquisar nas opções. As opções não selecionadas e selecionadas aparecem em duas caixas lado a lado. 
 
 !['ola']('./../img/django-adm10.png)
 
@@ -411,7 +414,7 @@ Defina `save_as` para habilitar um recurso “salvar como novo” nos formulári
 
 Normalmente, os objetos têm três opções de salvamento: “Salvar”, “Salvar e continuar editando” e “Salvar e adicionar outro”. Se save_as for True, “Salvar e adicionar outro” será substituído por um botão “Salvar como novo” que cria um novo objeto (com um novo ID) ao invés de atualizar o objeto existente.
 
-Por padrão, save_as é definido como False
+Por padrão, `save_as` é definido como `False`
 
 ### Caixa de Pesquisa
 
@@ -452,18 +455,18 @@ class ProducerAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm20.png)
 
-- Assim como o ModelAdmin, os Inline também possuem as opções de personalização, como form, fields, fieldsets, exclude, etc. Entretanto, exitem algumas personalizações extras, como: 
-  - **model** -  O modelo que o inline está usando. Isso é obrigatório. 
-  - **fk_name** -  O nome da chave estrangeira no modelo. Na maioria dos casos, isso será tratado automaticamente, mas fk_name deve ser especificado explicitamente se houver mais de uma chave estrangeira para o mesmo modelo pai. 
-  - **formset** - O padrão é BaseInlineFormSet. Usar seu próprio formset pode lhe dar muitas possibilidades de customização. Inlines são construídos em torno de conjuntos de formulários de modelo. 
-  - **max_num** - Isso controla o número máximo de formulários a serem exibidos na linha. Isso não se correlaciona diretamente com o número de objetos, mas pode se o valor for pequeno o suficiente. 
-  - **min_num** - Isso controla o número mínimo de formulários a serem exibidos na linha
-  - **raw_id_fields** -  Por padrão, o administrador do Django usa uma interface de caixa de seleção (`<select>`) para campos que são ForeignKey. Às vezes, você não quer incorrer na sobrecarga de ter que selecionar todas as instâncias relacionadas para exibir no menu suspenso. `raw_id_fields` é uma lista de campos que você gostaria de transformar em um widget de entrada para ForeignKey ou ManyToManyField.
-  - **template** -  O modelo usado para renderizar o embutido na página. 
-  - **verbose_name** -  Uma substituição para o verbose_name encontrado na classe Meta interna do modelo.
-  - **verbose_name_plural** -  Uma substituição para verbose_name_plural encontrado na classe Meta interna do modelo.
-  - **can_delete** - Especifica se os objetos embutidos podem ou não ser excluídos no embutido. O padrão é True.
-  - **show_change_link** - Especifica se os objetos embutidos que podem ser alterados no admin têm ou não um link para o formulário de alteração. O padrão é False. 
+- Assim como o ModelAdmin, os Inline também possuem as opções de personalização, como `form`, `fields`, `fieldsets`, `exclude`, etc. Entretanto, exitem algumas personalizações extras, como: 
+  - `model` -  O modelo que o inline está usando. Isso é obrigatório. 
+  - `fk_name` -  O nome da chave estrangeira no modelo. Na maioria dos casos, isso será tratado automaticamente, mas fk_name deve ser especificado explicitamente se houver mais de uma chave estrangeira para o mesmo modelo pai. 
+  - `formset` - O padrão é BaseInlineFormSet. Usar seu próprio formset pode lhe dar muitas possibilidades de customização. Inlines são construídos em torno de conjuntos de formulários de modelo. 
+  - `max_num` - Isso controla o número máximo de formulários a serem exibidos na linha. Isso não se correlaciona diretamente com o número de objetos, mas pode se o valor for pequeno o suficiente. 
+  - `min_num` - Isso controla o número mínimo de formulários a serem exibidos na linha
+  - `raw_id_fields` -  Por padrão, o administrador do Django usa uma interface de caixa de seleção (`<select>`) para campos que são ForeignKey. Às vezes, você não quer incorrer na sobrecarga de ter que selecionar todas as instâncias relacionadas para exibir no menu suspenso. `raw_id_fields` é uma lista de campos que você gostaria de transformar em um widget de entrada para ForeignKey ou ManyToManyField.
+  - `template` -  O modelo usado para renderizar o embutido na página. 
+  - `verbose_name` -  Uma substituição para o verbose_name encontrado na classe Meta interna do modelo.
+  - `verbose_name_plural` -  Uma substituição para verbose_name_plural encontrado na classe Meta interna do modelo.
+  - `can_delete` - Especifica se os objetos embutidos podem ou não ser excluídos no embutido. O padrão é True.
+  - `show_change_link` - Especifica se os objetos embutidos que podem ser alterados no admin têm ou não um link para o formulário de alteração. O padrão é False. 
 - [InlineModelAdmin options](https://docs.djangoproject.com/en/3.2/ref/contrib/admin/#inlinemodeladmin-options)
 
 ```Python
@@ -484,27 +487,27 @@ class ProducerAdmin(admin.ModelAdmin):
 
 ## Personalizar a Área de Administração
 
-Existem algumas personalizações básicas que podemos realizar no site, como alterar o o títulos da área de administração. 
+Existem algumas personalizações básicas que podemos realizar no site, como alterar o títulos da área de administração. 
 
 !['ola']('./../img/django-adm22.png)
 
-- **AdminSite.site_header** -  O texto a ser colocado no topo de cada página de administração, como um `<h1>` (uma string). Por padrão, esta é a 'administração do Django'.
-- **AdminSite.site_title** -  O texto a ser colocado no final de cada `<title>` da página de administração (uma string). Por padrão, é 'administrador do site Django'.
-- **AdminSite.site_url** -  O URL para o link 'Exibir site' na parte superior de cada página de administração. Por padrão, site_url é `/.` Defina como Nenhum para remover o link.
-- **AdminSite.index_title** -  O texto a ser colocado no topo da página de índice do administrador (uma string). Por padrão, é 'Administração do site'.
-- **AdminSite.index_template** -  Caminho para um modelo personalizado que será usado pela exibição de índice principal do site de administração.
-- **AdminSite.app_index_template** - Caminho para um modelo personalizado que será usado pela exibição de índice do aplicativo do site de administração.
-- **AdminSite.empty_value_display** -  A string a ser usada para exibir valores vazios na lista de alterações do site de administração. O padrão é um traço. O valor também pode ser substituído por ModelAdmin e em um campo personalizado em um ModelAdmin, definindo um atributo empty_value_display no campo. Consulte ModelAdmin.empty_value_display para obter exemplos.
-- **AdminSite.enable_nav_sidebar** -   Um valor booleano que determina se a barra lateral de navegação deve ser exibida em telas maiores. Por padrão, é definido como True.
-- **AdminSite.final_catch_all_view** -   Um valor booleano que determina se é necessário adicionar uma visão geral final ao administrador que redireciona os usuários não autenticados para a página de login. Por padrão, é definido como True.
-- **warning** -  Definir como False não é recomendado, pois a exibição protege contra um possível problema de privacidade de enumeração de modelo.
-- **AdminSite.login_template** -  Caminho para um modelo personalizado que será usado pela visualização de login do site de administração.
-- **AdminSite.login_form** -  Subclasse de AuthenticationForm que será usada pela visualização de login do site de administração.
-- **AdminSite.logout_template** -  Caminho para um modelo personalizado que será usado pela visualização de logout do site de administração.
-- **AdminSite.password_change_template** -  Caminho para um modelo personalizado que será usado pela visualização de alteração de senha do site do administrador.
-- **AdminSite.password_change_done_template** -  Caminho para um modelo personalizado que será usado pela visualização concluída de alteração de senha do site do administrador.
+- `AdminSite.site_header` -  O texto a ser colocado no topo de cada página de administração, como um `<h1>` (uma string). Por padrão, esta é a 'administração do Django'.
+- `AdminSite.site_title` -  O texto a ser colocado no final de cada `<title>` da página de administração (uma string). Por padrão, é 'administrador do site Django'.
+- `AdminSite.site_url` -  O URL para o link 'Exibir site' na parte superior de cada página de administração. Por padrão, site_url é `/.` Defina como Nenhum para remover o link.
+- `AdminSite.index_title` -  O texto a ser colocado no topo da página de índice do administrador (uma string). Por padrão, é 'Administração do site'.
+- `AdminSite.index_template` -  Caminho para um modelo personalizado que será usado pela exibição de índice principal do site de administração.
+- `AdminSite.app_index_template` - Caminho para um modelo personalizado que será usado pela exibição de índice do aplicativo do site de administração.
+- `AdminSite.empty_value_display` -  A string a ser usada para exibir valores vazios na lista de alterações do site de administração. O padrão é um traço. O valor também pode ser substituído por ModelAdmin e em um campo personalizado em um ModelAdmin, definindo um atributo empty_value_display no campo. Consulte ModelAdmin.empty_value_display para obter exemplos.
+- `AdminSite.enable_nav_sidebar` -   Um valor booleano que determina se a barra lateral de navegação deve ser exibida em telas maiores. Por padrão, é definido como True.
+- `AdminSite.final_catch_all_view` -   Um valor booleano que determina se é necessário adicionar uma visão geral final ao administrador que redireciona os usuários não autenticados para a página de login. Por padrão, é definido como True.
+- `warning` -  Definir como False não é recomendado, pois a exibição protege contra um possível problema de privacidade de enumeração de modelo.
+- `AdminSite.login_template` -  Caminho para um modelo personalizado que será usado pela visualização de login do site de administração.
+- `AdminSite.login_form` -  Subclasse de AuthenticationForm que será usada pela visualização de login do site de administração.
+- `AdminSite.logout_template` -  Caminho para um modelo personalizado que será usado pela visualização de logout do site de administração.
+- `AdminSite.password_change_template` -  Caminho para um modelo personalizado que será usado pela visualização de alteração de senha do site do administrador.
+- `AdminSite.password_change_done_template` -  Caminho para um modelo personalizado que será usado pela visualização concluída de alteração de senha do site do administrador.
 
-Iremos ver como alterar as páginas de login, na seção de uruários. Para alterar estas configurações, devemos reescrever os atributos dentro do arquivo URLs do projeto
+Para alterar estas configurações, devemos reescrever os atributos dentro do arquivo URLs do projeto
 
 ```Python
 from django.contrib import admin
@@ -524,7 +527,7 @@ admin.AdminSite.index_title = 'ADM'
 
 ## Adicionar Temas 
 
-É muito imples adicionar um tema novo para o Django-admin, para isso, basta instalar o pacote e inserir em aplicações instaladas o core do tema. 
+É muito simples adicionar um tema novo para o Django-admin, para isso, basta instalar o pacote e inserir em aplicações instaladas o core do tema. 
 
 [django-adminlte-3 0.1.6](https://pypi.org/project/django-adminlte-3/)
 
@@ -556,7 +559,7 @@ Como o Django é um projeto opensource, podemos alterar os seus arquivos como qu
 
 Os arquivos da área de administração se encontram no caminho `env -> lib -> site-packages -> django -> contrib -> admin -> templates -> admin`
 
-Para sobreescrever estes arquivos, deve-se criar um diretório na raiz do projeto chamado `templates` e colar a pasta `admin` dentro do diretório criado. 
+Para sobrescrever estes arquivos, deve-se criar um diretório na raiz do projeto chamado `templates` e colar a pasta `admin` dentro do diretório criado. 
 
 O mesmo vale para os temas baixados. Deve-se seguir o caminho `env -> lib -> site-packages -> adminlt3 e adminlte3_theme`. E copiar as duas pastas e colar na pasta `templates` na raiz do projeto. 
 
