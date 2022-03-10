@@ -9,31 +9,31 @@ Para escrever um teste, você deriva de qualquer uma das classes base de teste d
 Devemos criar uma pasta dentro da projeto, com um arquivo vazio chamado `__init__.py` para indicar que se trata de um pacote python. En seguida devemos criar junto 3 arquivos de testes, uma para testar nossos modelos, um para testar os formulários e por fim um arquivo de teste para testar as views.  
 
 - /tests/
-    - \_\_init\_\_.py
-    - test_models.py
-    - test_forms.py
-    - test_views.py
+  - `__init__.py`
+  - test_models.py
+  - test_forms.py
+  - test_views.py
 
 ## Lista de Asserts
 
-Método | Descrição
---- | ---
-assertEqual(a, b) | a == b
-assertNotEqual(a, b) | a != b
-assertTrue(x) | bool(x) is True
-assertFalse(x) | bool(x) is False
-assertIs(a, b) | a is b
-assertIsNot(a, b) | a is not b
-assertIsNone(x) | x is None
-assertIsNotNone(x) | x is not None
-assertIn(a, b) | a in b
-assertNotIn(a, b) | a not in b
-assertIsInstance(a, b) | isinstance(a, b)
-assertNotIsInstance(a, b) | not isinstance(a, b)
+| Método                    | Descrição            |
+| ------------------------- | -------------------- |
+| assertEqual(a, b)         | a == b               |
+| assertNotEqual(a, b)      | a != b               |
+| assertTrue(x)             | bool(x) is True      |
+| assertFalse(x)            | bool(x) is False     |
+| assertIs(a, b)            | a is b               |
+| assertIsNot(a, b)         | a is not b           |
+| assertIsNone(x)           | x is None            |
+| assertIsNotNone(x)        | x is not None        |
+| assertIn(a, b)            | a in b               |
+| assertNotIn(a, b)         | a not in b           |
+| assertIsInstance(a, b)    | isinstance(a, b)     |
+| assertNotIsInstance(a, b) | not isinstance(a, b) |
 
 ### Asserts Customizados Django
 
-Como numa classe Python unittest.TestCase normal que implementa métodos de asserção como assertTrue e assertEquals, a classe customizada TestCase do Django disponibiliza alguns métodos de asserção customizados que são úteis para testar aplicações Web
+Como numa classe Python `unittest.TestCase` normal que implementa métodos de asserção como `assertTrue` e `assertEquals`, a classe customizada TestCase do Django disponibiliza alguns métodos de asserção customizados que são úteis para testar aplicações Web.
 
 - [Lista de Asserts Suportadas pelo Django](https://docs.djangoproject.com/en/3.2/topics/testing/tools/#assertions)
 
@@ -45,17 +45,17 @@ Como numa classe Python unittest.TestCase normal que implementa métodos de asse
     - `fieldclass` – a classe do campo a ser testado.
     - `valid` – um dicionário mapeando entradas válidas para seus valores limpos esperados.
     - `invalid` – um dicionário mapeando entradas inválidas para uma ou mais mensagens de erro levantadas.
-    - `field_args` – os args passaram para instanciar o campo.
-    - `field_kwargs` – os kwargs passaram para instanciar o campo.
+    - `field_args` – os `args` passaram para instanciar o campo.
+    - `field_kwargs` – os `kwargs` passaram para instanciar o campo.
     - `empty_value` – a saída limpa esperada para entradas em .empty_values
 	- `self.assertFieldOutput(EmailField, {'a@a.com': 'a@a.com'}, {'aaa': ['Enter a valid email address.']})`
 
 #### assertFormsetError(resposta, formset, form_index, campo, erros, msg_prefix='')
 
-Afirma que aumenta a lista de erros fornecidos quando prestados.formset
-    - `formset` - é o nome que a instância foi dada no contexto do modelo.Formset
-    - `form_index` - é o número do formulário dentro do . Se tiver um valor de erros não-forma (erros que você pode acessar via ) será verificado.Formsetform_indexNoneformset.non_form_errors()
-    - `field` é o nome do campo no formulário para verificar. Se tiver um valor de erros não-campo (erros que você pode acessar via form.non_field_errors()) será verificado.fieldNone
+Afirma que aumenta a lista de erros fornecidos quando `prestados.formset`
+    - `formset` - é o nome que a instância foi dada no contexto do `modelo.Formset`
+    - `form_index` - é o número do formulário dentro do . Se tiver um valor de erros não-forma (erros que você pode acessar via ) será verificado. `Formsetform_indexNoneformset.non_form_errors()`
+    - `field` é o nome do campo no formulário para verificar. Se tiver um valor de erros não-campo (erros que você pode acessar via `form.non_field_errors()` será verificado.fieldNone
     - `errors` é uma sequência de erros, ou uma lista de sequências de erro, que são esperadas como resultado da validação do formulário.
 
 #### assertContains(response, text, count=None, status_code=200)
@@ -83,7 +83,7 @@ Teste se a resposta devolve um status de redirecionamento `status_code`, se redi
 
 #### assertURLEqual(url1, url2, msg_prefix='')
 
-Afirma que duas URLs são as mesmas, ignorando a ordem dos parâmetros de sequência de consultas, exceto para parâmetros com o mesmo nome. Por exemplo, é igual a , mas não é igual a `./path/?x=1&y=2/path/?y=2&x=1/path/?a=1&a=2/path/?a=2&a=1`
+Afirma que duas URLs são as mesmas, ignorando a ordem dos parâmetros de sequência de consultas, exceto para parâmetros com o mesmo nome. Por exemplo, `./path/?x=1&y=2/` é igual a `path/?y=2&x=1/`, mas `path/?a=1&a=2/` não é igual a `path/?a=2&a=1`
 
 
 ### Exemplo Básico
@@ -148,7 +148,7 @@ class SimpleTest(TestCase):
 
 ### Requisições
 
-Uma vez que você tenha uma instância de Client, você pode chamar qualquer um dos seguintes métodos:
+Uma vez que você tenha uma instância de `Client`, você pode chamar qualquer um dos seguintes métodos:
 
 #### get(path, data={}, **extra)
 
@@ -164,7 +164,7 @@ Faz uma requisição POST no `path` informado e devolve um objeto `Response`. Os
 
 #### login(**credentials)
 
-Se seu site Django usa o sistema de autenticação e você precisa logar usuários, você pode usar o método login() do cliente de testes para simular o efeito de um usuário logando no site. Depois de chamar este método, o cliente de testes terá todos os cookies e dados de sessão necessários para passar a qualquer teste baseado em login que faça parte de uma view.
+Se seu site Django usa o sistema de autenticação e você precisa logar usuários, você pode usar o método `login()` do cliente de testes para simular o efeito de um usuário logando no site. Depois de chamar este método, o cliente de testes terá todos os cookies e dados de sessão necessários para passar a qualquer teste baseado em login que faça parte de uma view.
 
 Você precisa **lembrar-se de criar contas de usuários antes de utilizar este método**. Pois o executor de testes utiliza uma base de dados de teste, que não contém usuários criados. 
 - Você precisa criar os usuários como parte de sua test suite – tanto manualmente (utilizando a API de modelos do Django) ou com uma test fixture.
@@ -174,13 +174,13 @@ O formato do argumento credentials depende de qual backend de autenticação voc
 
 #### logout()
 
-Se o seu site usa o sistema de autenticação do Django, o método logout() pode ser utilizado para simular o efeito de um usuário se deslogar do seu site.
+Se o seu site usa o sistema de autenticação do Django, o método `logout()` pode ser utilizado para simular o efeito de um usuário se deslogar do seu site.
 
-Depois de chamar este método, o cliente de teste terá todos os cookies e dados de sessão retornados para os valores padrões. Requisições subseqüentes parecerão vir de um usuário anônimo AnonymousUser.
+Depois de chamar este método, o cliente de teste terá todos os cookies e dados de sessão retornados para os valores padrões. Requisições subsequentes parecerão vir de um usuário anônimo `AnonymousUser`.
 
 #### cookies
 
-Um objeto SimpleCookie Python, contendo os valores atuais de todos os cookies do cliente. 
+Um objeto `SimpleCookie`, contendo os valores atuais de todos os cookies do cliente. 
 
 #### session
 
@@ -188,13 +188,13 @@ Um objeto que se comporta como dicionário contendo informações da sessão.
 
 ### Objeto Response
 
-Especificamente, o objeto Response tem os seguintes atributos:
-- **client** - O cliente de teste que foi usado para fazer a requisição que resultou na resposta.
-- **content** - O corpo da resposta, como uma string. Este é o conteúdo final da página que foi gerada pela view, ou alguma mensagem de erro.
-- **context** - A instância Context que foi utilizada pelo template para produzir o conteúdo da resposta. Se a página gerada utilizou múltiplos templates, então o context será uma lista de objetos Context, na ordem em que foram utilizados.
-- **request** - Os dados da requisição que provocaram a resposta.
-- **status_code** - O status da resposta HTTP, como um inteiro. 
-- **template** - A instância de Template que foi utilizada para gerar o conteúdo final. Use template.name para obter o nome do arquivo do template, se o template foi carregado de um arquivo. (O nome é uma string como 'admin/index.html'.)  Se a página gerada utilizou vários templates – ex: utilizando herança de templates – então template será uma lista de instâncias de Template, na ordem em que eles foram utilizados.
+Especificamente, o objeto `Response` tem os seguintes atributos:
+- `client` - O cliente de teste que foi usado para fazer a requisição que resultou na resposta.
+- `content` - O corpo da resposta, como uma string. Este é o conteúdo final da página que foi gerada pela view, ou alguma mensagem de erro.
+- `context` - A instância Context que foi utilizada pelo template para produzir o conteúdo da resposta. Se a página gerada utilizou múltiplos templates, então o context será uma lista de objetos Context, na ordem em que foram utilizados.
+- `request` - Os dados da requisição que provocaram a resposta.
+- `status_code` - O status da resposta HTTP, como um inteiro. 
+- `template` - A instância de Template que foi utilizada para gerar o conteúdo final. Use template.name para obter o nome do arquivo do template, se o template foi carregado de um arquivo. (O nome é uma string como `'admin/index.html'`.)  Se a página gerada utilizou vários templates – ex: utilizando herança de templates – então template será uma lista de instâncias de Template, na ordem em que eles foram utilizados.
 
 ### Exemplo 
 
@@ -223,7 +223,7 @@ class SimpleTest(unittest.TestCase):
 A melhor classe base para maioria dos testes é `django.test.TestCase.`
 
 - Esta classe de teste **cria um banco de dados limpo antes dos testes serem executados**, e executa todas as funções de teste em sua própria transação.
-- A classe também possui um Client de teste, que você pode utilizar para **simular um usuário interagindo com o código no nível de view**.
+- A classe também possui um `Client` de teste, que você pode utilizar para **simular um usuário interagindo com o código no nível de view**.
 - Testes que necessitam de uma base de dados (nomeadamente, testes de modelo) não usarão seu banco de dados 'real' (produção). Um banco de dados vazio é criado em separado para os testes.
 - Independentemente de os testes passarem ou falharem, o banco de dados de teste é destruído quando todos os testes forem executados.
 - Por padrão, o nome deste banco de dados de teste é o valor da configuração `DATABASE_NAME` adicionando o prefixo `test_`
@@ -241,8 +241,8 @@ Um teste para um site Web com banco de dados não tem muita utilidade se não ex
 - Uma fixture é uma coleção de dados que o Django sabe como importar para um banco de dados. Por exemplo, se o seu site tem contas de usuários, você pode configurar uma fixture de usuários no intuito de popular seu banco durante os testes.
 
 - **Você armazenará este dado em um diretório fixtures dentro de sua aplicação**
-  - Por padrão, o Django procura por “fixtures” no diretório fixtures dentro de cada app. Você definir a FIXTURE_DIRS como uma lista de diretórios adicionais onde o Django deve procurar.
-  - Quando chamar manage.py loaddata, você pode especificar um caminho para o arquivo de “fixture”, o qual é procurado no lugar dos diretórios usuais.
+  - Por padrão, o Django procura por “fixtures” no diretório fixtures dentro de cada app. Você definir a `FIXTURE_DIRS` como uma lista de diretórios adicionais onde o Django deve procurar.
+  - Quando chamar `manage.py loaddata`, você pode especificar um caminho para o arquivo de “fixture”, o qual é procurado no lugar dos diretórios usuais.
 
 ```JSON
 [
@@ -283,7 +283,7 @@ class AnimalTestCase(TestCase):
 
 Algumas observações
 
-- No início de cada test case, antes de setUp() ser rodado, o Django limpará o banco de dados, retornando um banco de dados no estado que estava diretamente após a chamada de syncdb.
+- No início de cada test case, antes de `setUp()` ser rodado, o Django limpará o banco de dados, retornando um banco de dados no estado que estava diretamente após a chamada de `syncdb`.
 - Em seguida, todas as fixtures nomeadas são instaladas. Nesse exemplo, o Django instalará qualquer fixture JSON chamada mammals, seguida por qualquer fixture chamada birds
 - Esse procedimento de limpeza/carga é repetido para cada teste no test case, então você pode ter certeza de que o resultado de um teste não será afetado por outro teste, ou pela ordem de execução dos testes.
 
@@ -307,7 +307,7 @@ class Author(models.Model):
         return f'{self.last_name}, {self.first_name}'
 ```
 
-Para testar um modelo devemos importar a biblioteca TestCase e os modelos que desejamos testar. Em Seguida, devemos criar a classe testadora que irá herdar a classe TestCase. 
+Para testar um modelo devemos importar a biblioteca `TestCase` e os modelos que desejamos testar. Em Seguida, devemos criar a classe testadora que irá herdar a classe TestCase. 
 
 ```Python
 from django.test import TestCase
@@ -335,8 +335,8 @@ class AuthorModelTest(TestCase):
 ### Testar Rótulos do Modelo
 
 1. Podemos testar os rótulos criados pelo modelo, para isso devemos pesquisar o objeto criado: `author = Author.objects.get(id=1)`.
-2. Devemos selecionar o campo pelo seu nome de variável e extrair a label do campo com o 'verbose_name': `author._meta.get_field('field_name').verbose_name`
-3. Por fim, devemos verificar se o label do campor retornado na etapa 2 é igual ao esperado: `self.assertEquals(field_label, 'label')`
+2. Devemos selecionar o campo pelo seu nome de variável e extrair a label do campo com o '`verbose_name`': `author._meta.get_field('field_name').verbose_name`
+3. Por fim, devemos verificar se o label do campo retornado na etapa 2 é igual ao esperado: `self.assertEquals(field_label, 'label')`
 
 ```Python
 from django.test import TestCase
@@ -381,7 +381,7 @@ class AuthorModelTest(TestCase):
         self.assertEquals(max_length, 100)  
 ```
 
-### Testar Metodos do Modelo
+### Testar Métodos do Modelo
 
 Também precisamos testar nossos métodos personalizados. Eles, essencialmente, apenas verificam se o nome do objeto foi construído como esperamos
 
@@ -418,8 +418,8 @@ A filosofia para testar seus forms é a mesma que para testar seus models; você
 
 Caso queiramos testar se um conjunto de dados é válido ou não em um formulário, podemos seguir as seguintes etapas
 
-1. Criar um dicionário com os dados para o formulário, onde a chave deve ser a mesma usada pelo campo do forumário: `{'name': 'something'}` 
-2. Devemos criar um objeto do forumário passando o dicionário como argumento: `MyForm(data=form_data)`
+1. Criar um dicionário com os dados para o formulário, onde a chave deve ser a mesma usada pelo campo do formulário: `{'name': 'something'}` 
+2. Devemos criar um objeto do formulário passando o dicionário como argumento: `MyForm(data=form_data)`
 3. Por fim, devemos verificar se o formulário é válido: `self.assertTrue(form.is_valid())`
 
 ```Python
@@ -435,9 +435,9 @@ class MyTests(TestCase):
 
 ### Testar Atributos dos Campos dos Formulários
 
-Podemos testar os valores passadados para os atributos dos campos, como os campos label e help_text. Precisamos testar se o valor do label é None, porque mesmo que o Django processe o label correto, retornará None se o valor não estiver definido explicitamente.
+Podemos testar os valores  para os atributos dos campos, como os campos `label` e `help_text`. Precisamos testar se o valor do `label` é `None`, porque mesmo que o Django processe o `label` correto, retornará `None` se o valor não estiver definido explicitamente.
 
-1. Temos que criar um formulário vázio: `form = RenewBookForm()`
+1. Temos que criar um formulário vazio: `form = RenewBookForm()`
 2. Temos que acessar o campo usando o dicionário de campos especificando qual atributos queremos pegar o valor. `form.fields['renewal_date'].atributo`
 3. Por fim, devemos verificar se o valor contido dentro do atributo é o valor esperado. 
 
@@ -460,6 +460,7 @@ class RenewBookFormTest(TestCase):
 Os formulários possuem funções que retornam diferentes estruturas de HTML como `form.as_p()` torna o formulário como HTML usando elementos Ps.
 
 Formulário
+
 ```Python
 class ItemForm(forms.Form):
     item_text = forms.CharField(
@@ -485,7 +486,7 @@ class ItemFormTest(TestCase):
 
 ### Testar Mensagens de Erros dos Formulários
 
-Existem algumas possibilidades de se testar mensagens de erros gerads pelos campos, abaixo, podemos ver algumas destas maneiras.
+Existem algumas possibilidades de se testar mensagens de erros gerados pelos campos, abaixo, podemos ver algumas destas maneiras.
 
 ```Python
 password = forms.RegexField(
@@ -501,7 +502,7 @@ password = forms.RegexField(
 self.assertFalse(form.is_valid())
 self.assertIn('password', form.errors.keys())
 self.assertIn('It is invalid', form.errors['password'])
-self.assertEqual(form.errors['password'][0], 'It is invalid'
+self.assertEqual(form.errors['password'][0], 'It is invalid')
 ```
 
 ## Teste de Modelos de Formulários
@@ -594,7 +595,7 @@ Podemos testar também o contexto retornado por uma view, para isto, basta fazer
 
 Também podemos verificar, o valor contido dentro do contexto, se é condizente com o que a página deveria retorna como resposta. 
 
-No exemplo estamos usando uma View que retorna uma página com uma lista de 10 Autores, além disto a View usa uma ClassBasedView do tipo de Paginação, ou seja, ela irá criar automáticamente páginas para os demais autores, caso hajam mais de 10 autores a serem listados. 
+No exemplo estamos usando uma View que retorna uma página com uma lista de 10 Autores, além disto a View usa uma ClassBasedView do tipo de Paginação, ou seja, ela irá criar automaticamente páginas para os demais autores, caso hajam mais de 10 autores a serem listados. 
 
 ```Python
 
@@ -649,7 +650,7 @@ Neste contexto devemos testar o redirecionamento dos usuários, caso ele esteja 
         self.assertRedirects(response, '/accounts/login/?next=/catalog/mybooks/')
 ```
 
-Para simularmos um usuário autenticado devemos chamar o método **login** do objeto cliente, sem seguida devemos fazer uma solicitação GET para a página restrita verificando no contexto da resposta o nome do usuário, se a solicitação obteve sucesso. Além distom ainda podemos verificar o templete usado. 
+Para simularmos um usuário autenticado devemos chamar o método **login** do objeto cliente, sem seguida devemos fazer uma solicitação GET para a página restrita verificando no contexto da resposta o nome do usuário, se a solicitação obteve sucesso. Além disto, ainda podemos verificar o templete usado. 
 
 ```Python
 def test_logged_in_uses_correct_template(self):
@@ -720,7 +721,7 @@ O parâmetro `--verbosity` com os argumentos entre 0, 1, 2, e 3 que definem os n
 
 Se você deseja executar um subconjunto de seus testes, você pode fazer isso especificando o caminho completo para o(s) pacote(s), módulos, subclasse TestCase ou método:
 
-```
+```shell
 # Run the specified module
 python manage.py test catalog.tests
 
@@ -740,7 +741,7 @@ python manage.py test catalog.tests.test_models.YourTestClass.test_one_plus_one_
 
 > pip install model-mommy
 
-Model Mommy é usado para criar objetos de forma aleatória respeitando as características e restrições dos objetos. . Ele é estremamente útil para testes, pois facilita na criação dos objetos, principalmente objetos que precisam que outros objetos sejam instanciados, como um livro precisa de um autor. Neste caso o Model Mommy irá criar um objeto autor aleatoriamente para criar um objeto livre. 
+Model Mommy é usado para criar objetos de forma aleatória respeitando as características e restrições dos objetos. . Ele é extremamente útil para testes, pois facilita na criação dos objetos, principalmente objetos que precisam que outros objetos sejam instanciados, como um livro precisa de um autor. Neste caso o Model Mommy irá criar um objeto autor aleatoriamente para criar um objeto livre. 
 
 
 Exemplo de um Modelo 
@@ -780,7 +781,7 @@ class KidTestModel(TestCase):
 
 E ainda fica melhor, a mommy permite criar objetos sem necessariamente importá-lo. Caso o modelo seja único em todas as aplicações do sistema, basta especificar o nome entre aspas 'Modelo' e o mommy irá fazer todo o trabalho. 
 
-Caso haja mais de um modelo com o mesmo nome estre as aplicações, deve especificar de qual a aplicação a mommy deve usar 'app.Model'.
+Caso haja mais de um modelo com o mesmo nome entre as aplicações, deve especificar de qual a aplicação a mommy deve usar 'app.Model'.
 
 ```Python
 from django.test import TestCase
@@ -791,7 +792,7 @@ class KidTestModel(TestCase):
         self.kid = mommy.make("Kid")
 ```
 
-No exemplo abaixo, o Cachorro tem uma criança com seu dono (**ForeignKey**), ou seja, precisariamos ter que criar uma criança para então criar um objeto cachorro. Mas a mommy já faz tudo isto de forma automática. 
+No exemplo abaixo, o Cachorro tem uma criança com seu dono (**ForeignKey**), ou seja, precisaríamos ter que criar uma criança para então criar um objeto cachorro. Mas a mommy já faz tudo isto de forma automática. 
 
 ```Python
 from django.test import TestCase
@@ -827,12 +828,12 @@ kids = mommy.make('family.Kid', _quantity=3)
 ```
 
 
-**Criando arquivos** - Mamãe não cria arquivos para tipos fileField. Se você precisar ter os arquivos criados, você pode passar o flag _create_files=True (padrão para False) para mamãe.make ou mommy.make_recipe. Importante: A mamãe não faz nenhum tipo de limpeza de arquivo, então cabe a você excluir os arquivos criados por ele.
+**Criando arquivos** - Mamãe não cria arquivos para tipos fileField. Se você precisar ter os arquivos criados, você pode passar o flag _create_files=True (padrão para False) para mommy.make ou mommy.make_recipe. Importante: A mommy não faz nenhum tipo de limpeza de arquivo, então cabe a você excluir os arquivos criados por ele.
 
 
 ## Coverage
 
-Coverage.py é uma ferramenta para medir a cobertura de código de programas Python. Ele monitora seu programa, observando quais partes do código foram executadas, então analisa a fonte para identificar o código que poderia ter sido executado, mas não foi.
+`Coverage.py` é uma ferramenta para medir a cobertura de código de programas Python. Ele monitora seu programa, observando quais partes do código foram executadas, então analisa a fonte para identificar o código que poderia ter sido executado, mas não foi.
 
 A medição da cobertura é normalmente usada para medir a eficácia dos testes. Ele pode mostrar quais partes do seu código estão sendo exercidas por testes, e quais não são.
 
