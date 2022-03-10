@@ -1,4 +1,4 @@
-# Página de Administração
+# 1. Página de Administração
 
 - [Tutorial Django Parte 4: Django admin site](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Admin_site)
 - [Django Dashboards - Open-Source and Free ](https://dev.to/sm0ke/django-admin-dashboards-open-source-and-free-1o80)
@@ -11,8 +11,40 @@ O Django oferece uma interface de administração quer permite listar um conjunt
  O projeto Django o recomenda apenas para gerenciamento interno de dados (ou seja, apenas para uso por administradores ou pessoas internas à sua organização), pois a abordagem centrada no modelo não é necessariamente a melhor interface possível para todos os usuários e expõe muitos detalhes desnecessários sobre os modelos.
 
 
+- [1. Página de Administração](#1-página-de-administração)
+  - [1.1. Criando Modelo](#11-criando-modelo)
+  - [1.2. Criando Super Usuário](#12-criando-super-usuário)
+  - [1.3. Registrando Modelo](#13-registrando-modelo)
+  - [1.4. Cadastrar Dados](#14-cadastrar-dados)
+  - [1.5. Nome De listagem do Objeto](#15-nome-de-listagem-do-objeto)
+  - [1.6. Atributos](#16-atributos)
+    - [1.6.1. Listar Informações dos dados](#161-listar-informações-dos-dados)
+    - [1.6.2. Formulário Personalizado](#162-formulário-personalizado)
+    - [1.6.3. Definir Campos de Leitura](#163-definir-campos-de-leitura)
+    - [1.6.4. Definindo Filtros](#164-definindo-filtros)
+    - [1.6.5. Navegação por Datas](#165-navegação-por-datas)
+    - [1.6.6. Valor Parão para Valores Nulos](#166-valor-parão-para-valores-nulos)
+    - [1.6.7. Removendo Campos - exclude](#167-removendo-campos---exclude)
+    - [1.6.8. Agrupar Campos](#168-agrupar-campos)
+    - [1.6.9. Personalizar Campos com Fieldset](#169-personalizar-campos-com-fieldset)
+    - [1.6.10. Personalizar ManyToManyField](#1610-personalizar-manytomanyfield)
+    - [1.6.11. Alterar o Tipo do Campo](#1611-alterar-o-tipo-do-campo)
+    - [1.6.12. Link de Alteração](#1612-link-de-alteração)
+    - [1.6.13. Facilitando a edição de dados](#1613-facilitando-a-edição-de-dados)
+    - [1.6.14. Limitar o Número de Objetos](#1614-limitar-o-número-de-objetos)
+    - [1.6.15. Limitar o número de Objetos por Página](#1615-limitar-o-número-de-objetos-por-página)
+    - [1.6.16. Ordenar Objetos](#1616-ordenar-objetos)
+    - [1.6.17. Preenchendo SlugField](#1617-preenchendo-slugfield)
+    - [1.6.18. Salvar Objeto como Novo](#1618-salvar-objeto-como-novo)
+    - [1.6.19. Caixa de Pesquisa](#1619-caixa-de-pesquisa)
+    - [1.6.20. Desativar a Ordenação Por Coluna](#1620-desativar-a-ordenação-por-coluna)
+    - [1.6.21. Edição inline de registros associados](#1621-edição-inline-de-registros-associados)
+  - [1.7. Personalizar a Área de Administração](#17-personalizar-a-área-de-administração)
+  - [1.8. Adicionar Temas](#18-adicionar-temas)
+  - [1.9. Editar arquivos HTML](#19-editar-arquivos-html)
 
-## Criando Modelo
+
+## 1.1. Criando Modelo
 
 - Os modelos dos dados precisam estar criados, para o exemplo usaremos o modelo de um produto. 
 
@@ -80,7 +112,7 @@ class Game_Platform(models.Model):
         return f'{self.game}|{self.platform}'
 ```
 
- ## Criando Super Usuário
+ ## 1.2. Criando Super Usuário
 
  - Antes é preciso construir o versionamento e construir o banco de dados com os comandos abaixo.
 
@@ -102,7 +134,7 @@ python3 manage.py createsuperuser
 
   !['ola']('./../img/dj.png)
 
-## Registrando Modelo
+## 1.3. Registrando Modelo
 
 A forma mais simples, principalmente para testes, de cadastrar um objeto na área de administração é registrar o objeto com a sintaxe `admin.site.register(Modelo)`. 
 
@@ -121,13 +153,13 @@ E então o produto irá aparecer dentro da interface.
 
  !['ola']('./../img/django-adm1.png)
 
-## Cadastrar Dados
+## 1.4. Cadastrar Dados
 
 - Clicando em adicionar, ou clicando em produtos e posteriormente em adicionar produto, poderemos fazer um cadastro de múltiplos objetos. 
 
  !['ola']('./../img/django-adm2.png)
 
-## Nome De listagem do Objeto
+## 1.5. Nome De listagem do Objeto
 
 - Após o cadastro dos objetos, poderemos ver uma lista com os objetos cadastrados, entretanto irá, por padrão, exibir o nome do objeto. 
  
@@ -151,11 +183,11 @@ class Game_Platform(models.Model):
 !['ola']('./../img/django-adm3.png)
 
 
-## Atributos
+## 1.6. Atributos
 
 - O `ModelAmin` possui diversos atributos que nos permitem personalizar o CRUD dos objetos na área administrativa. 
 
-### Listar Informações dos dados
+### 1.6.1. Listar Informações dos dados
 
 - Caso queria que mais colunas apareçam, com outros dados do objeto, devemos criar um model admin e associá-lo ao modelo com o register após a definição da classe. 
   - `admin.site.register(Produto, ProdutoAdmin)`
@@ -172,7 +204,7 @@ class Game_Platform(admin.ModelAdmin):
 !['ola']('./../img/django-adm4.png)
 
 
-### Formulário Personalizado 
+### 1.6.2. Formulário Personalizado 
 
 - Caso você queria usar um formulário personalizado para a administração, basta seguir os passos
   1. Criar um formulário que receba um modelo 
@@ -190,7 +222,7 @@ class ProdutoAdmin(admin.ModelAdmin):
   form = FormProduto
 ```
 
-### Definir Campos de Leitura
+### 1.6.3. Definir Campos de Leitura
 
 - A opção `readonly_fields`, recebe uma lista com os nomes dos campos que devem ser de apenas leitura na área de administração. 
 
@@ -203,7 +235,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
  !['ola']('./../img/django-adm5.png)
 
-### Definindo Filtros
+### 1.6.4. Definindo Filtros
 
 - Usando a opção `list_filter` podemos definir quais campos do objeto terão um filtro de pesquisa. O filtro se ajusta automaticamente ao tipo dos dados. 
 - Filtros funciona melhor para **dados categóricos**, como tipo de produtos, marcas, etc.
@@ -220,14 +252,14 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 - Podemos também alterar o HTML da página do filtro, caso queria saber como acesse (FilterWithCustomTemplate)[https://docs.djangoproject.com/en/3.2/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter]
 
-### Navegação por Datas 
+### 1.6.5. Navegação por Datas 
 
 - Defina `date_hierarchy` como o nome de um `DateField` ou `DateTimeField` em seu modelo, e a página da lista de alterações incluirá uma navegação detalhada baseada em data por esse campo. 
   - `date_hierarchy = 'pub_date'`
 - Você também pode especificar um campo em um modelo relacionado usando a pesquisa `__`
   - `date_hierarchy = 'author__pub_date'`
 
-### Valor Parão para Valores Nulos 
+### 1.6.6. Valor Parão para Valores Nulos 
 
 Este atributo substitui o valor de exibição padrão para os campos do registro que estão vazios (Nenhum, string vazia, etc.). O valor padrão é `-` (um traço).
 
@@ -238,7 +270,7 @@ class AuthorAdmin(admin.ModelAdmin):
     empty_value_display = '-empty-'
 ```
 
-### Removendo Campos - exclude
+### 1.6.7. Removendo Campos - exclude
 
 Este atributo, se fornecido, deve ser uma lista de nomes de campos a serem excluídos do formulário. 
 
@@ -253,7 +285,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm7.png)
 
-### Agrupar Campos
+### 1.6.8. Agrupar Campos
 
 Use a opção de `fields` para fazer alterações de layout simples nos formulários nas páginas `adicionar` e `alterar`, como mostrar apenas um subconjunto de campos disponíveis, modificar sua ordem ou agrupá-los em linhas.
 - Para agrupar os campos em uma mesma linha, deve-se, envolvê-los entre parênteses.  
@@ -268,7 +300,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 !['ola']('./../img/django-adm8.png)
 
 
-### Personalizar Campos com Fieldset 
+### 1.6.9. Personalizar Campos com Fieldset 
 
 Defina os conjuntos de campos para controlar o layout das páginas de 'adição' e 'alteração' do administrador. `Fieldsets` é uma lista de duas tuplas, em que cada duas tuplas representa um `<fieldset>` na página do formulário de administração. (Um `<fieldset>` é uma 'seção' do formulário.)
 - As duas tuplas estão no formato `(name, field_options)`, onde name é uma string que representa o título do fieldset e field_options é um dicionário de informações sobre o fieldset, incluindo uma lista de campos a serem exibidos nele.
@@ -293,7 +325,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm9.png)
 
-### Personalizar ManyToManyField
+### 1.6.10. Personalizar ManyToManyField
 
 Por padrão, um `ManyToManyField` é exibido no site de administração com um `<selecionar múltiplo>`. No entanto, as caixas de seleção múltipla podem ser difíceis de usar ao selecionar muitos itens. Adicionar um `ManyToManyField` a esta lista, em vez disso, usará uma interface de 'filtro' JavaScript discreta e bacana que permite pesquisar nas opções. As opções não selecionadas e selecionadas aparecem em duas caixas lado a lado. 
 
@@ -316,7 +348,7 @@ class EmployeeAdmin(admin.ModelAdmin):
 !['ola']('./../img/django-adm12.png)
 
 
-### Alterar o Tipo do Campo
+### 1.6.11. Alterar o Tipo do Campo
 
 O atributo `formfield_overrides` é um dicionário que mapeia uma classe de campo para um dicionário de argumentos para passar para o campo no momento da construção. O uso mais comum de `formfield_overrides` é adicionar um widget personalizado para um determinado tipo de campo. 
 
@@ -338,7 +370,7 @@ class GameAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm14.png)
 
-### Link de Alteração
+### 1.6.12. Link de Alteração
 
 Use `list_display_links` para controlar se e quais campos em `list_display` devem ser vinculados à página de 'mudança' de um objeto. Por padrão, a página da lista de alterações vinculará a primeira coluna - o primeiro campo especificado em list_display - à página de alterações de cada item. Mas `list_display_links` permite que você altere isso. 
 
@@ -351,7 +383,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm15.png)
 
-### Facilitando a edição de dados
+### 1.6.13. Facilitando a edição de dados
 
 Defina `list_editable` como uma lista de nomes de campo no modelo que permitirá a edição na página da lista de alterações. Ou seja, os campos listados em `list_editable` serão exibidos como widget de formulário na página da lista de alterações, permitindo que os usuários editem e salvem várias linhas de uma vez. 
 
@@ -364,11 +396,11 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm16.png)
 
-### Limitar o Número de Objetos
+### 1.6.14. Limitar o Número de Objetos
 
 Defina `list_max_show_all` para controlar quantos itens podem aparecer em uma página de lista de alterações de administrador. O administrador exibirá um link “Mostrar todos” na lista de alterações apenas se a contagem total de resultados for menor ou igual a esta configuração. Por padrão, isso é definido como 200.
 
-### Limitar o número de Objetos por Página
+### 1.6.15. Limitar o número de Objetos por Página
 
 Defina `list_per_page` para controlar quantos itens aparecem em cada página paginada da lista de alterações do administrador. Por padrão, isso é definido como 100. 
 
@@ -382,7 +414,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm17.png)
 
-### Ordenar Objetos
+### 1.6.16. Ordenar Objetos
 
 Defina a ordenação para especificar como as listas de objetos devem ser ordenadas nas visualizações de administração do Django. Deve ser uma lista ou tupla no mesmo formato que o parâmetro de ordenação de um modelo. 
 
@@ -395,7 +427,7 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 !['ola']('./../img/django-adm18.png)
 
-### Preenchendo SlugField 
+### 1.6.17. Preenchendo SlugField 
 
 Defina `prepopulated_fields` para um dicionário de mapeamento de nomes de campos para os campos que devem ser pré-preenchidos .
 
@@ -408,7 +440,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
 ```
 
-### Salvar Objeto como Novo
+### 1.6.18. Salvar Objeto como Novo
 
 Defina `save_as` para habilitar um recurso “salvar como novo” nos formulários de alteração de administrador.
 
@@ -416,7 +448,7 @@ Normalmente, os objetos têm três opções de salvamento: “Salvar”, “Salv
 
 Por padrão, `save_as` é definido como `False`
 
-### Caixa de Pesquisa
+### 1.6.19. Caixa de Pesquisa
 
 Defina `search_fields` para habilitar uma caixa de pesquisa na página da lista de alterações do administrador. Isso deve ser definido como uma lista de nomes de campos que serão pesquisados sempre que alguém enviar uma consulta de pesquisa nessa caixa de texto. Podemos relacionar campos com `__`
 
@@ -430,11 +462,11 @@ class ProdutoAdmin(admin.ModelAdmin):
 !['ola']('./../img/django-adm19.png)
 
 
-### Desativar a Ordenação Por Coluna
+### 1.6.20. Desativar a Ordenação Por Coluna
 
 Se você deseja desativar a classificação para algumas colunas, defina `sortable_by` para uma coleção (por exemplo, lista, tupla ou conjunto) do subconjunto de list_display que você deseja que seja classificável. Uma coleção vazia desativa a classificação de todas as colunas.
 
-### Edição inline de registros associados
+### 1.6.21. Edição inline de registros associados
 
 Às vezes, pode fazer sentido adicionar registros associados ao mesmo tempo. Por exemplo, pode fazer sentido ter as informações do livro e as informações sobre as cópias específicas que você tem na mesma página de detalhes.
 
@@ -485,7 +517,7 @@ class ProducerAdmin(admin.ModelAdmin):
 !['ola']('./../img/django-adm21.png)
 
 
-## Personalizar a Área de Administração
+## 1.7. Personalizar a Área de Administração
 
 Existem algumas personalizações básicas que podemos realizar no site, como alterar o títulos da área de administração. 
 
@@ -525,7 +557,7 @@ admin.AdminSite.index_title = 'ADM'
 
 !['ola']('./../img/django-adm23.png)
 
-## Adicionar Temas 
+## 1.8. Adicionar Temas 
 
 É muito simples adicionar um tema novo para o Django-admin, para isso, basta instalar o pacote e inserir em aplicações instaladas o core do tema. 
 
@@ -553,7 +585,7 @@ python manage.py collectstatic
 
 !['ola']('./../img/django-adm24.png)
 
-## Editar arquivos HTML
+## 1.9. Editar arquivos HTML
 
 Como o Django é um projeto opensource, podemos alterar os seus arquivos como quisermos. 
 
