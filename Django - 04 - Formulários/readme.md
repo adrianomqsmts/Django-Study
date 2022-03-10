@@ -21,9 +21,9 @@ FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.
 - `value` define o valor preenchido inicialmente no campo quando ele é exibido pela primeira vez
 - A tag `label` define uma legenda para o campo, onde o atributo `for` associa a a legenda ao campo `input` pelo seu identificador `id`
 - O `type = 'submit'` será exibida como um botão, que ao ser pressionado, enviará os dados presentes no campo para o servidor. 
-  - O método POST deve sempre ser utilizado se os dados forem resultar em uma alteração no banco de dados do servidor, pois é mais resistente a ataques de falsificação de solicitação entre sites.
-  - O método GET deve ser utilizado somente para formulários que não alteram dados de usuário (um formulário de busca, por exemplo). Ele é recomendado para quando você quiser poder favoritar ou compartilhar a URL.
--  O atributo 'method' definem o método HTTP utilizado para enviar os dados e o destino para esses dados no servidor é definido em 'action'
+  - O método `POST` deve sempre ser utilizado se os dados forem resultar em uma alteração no banco de dados do servidor, pois é mais resistente a ataques de falsificação de solicitação entre sites.
+  - O método `GET` deve ser utilizado somente para formulários que não alteram dados de usuário (um formulário de busca, por exemplo). Ele é recomendado para quando você quiser poder favoritar ou compartilhar a URL.
+-  O atributo `method` definem o método HTTP utilizado para enviar os dados e o destino para esses dados no servidor é definido em `action`
 
 FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Forms)
 
@@ -38,7 +38,7 @@ FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.
 
 # Criando um Formulário
 
-Primeiro precisamos criar um arquivo chamado **forms.py** que irá armazenar todos os formulários da nossa aplicação. 
+Primeiro precisamos criar um arquivo chamado `forms.py` que irá armazenar todos os formulários da nossa aplicação. 
 
 - Exemplo de um formulário
 
@@ -51,7 +51,7 @@ class CommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
 ```
 
-## 10.1. Campos de formulários DJango
+## 10.1. Campos de formulários Django
 
 Para criar um formulário, precisamos ver todas as possibilidades de campos possível em [Campos de formulários](https://docs.djangoproject.com/en/dev/ref/forms/fields/).
 
@@ -125,44 +125,45 @@ class CommentForm(forms.Form):
 
 ### Lista de Widgets 
 
-- **TextInput**
-  - input_type: 'text'
-  - Renders as: &lt;input type="text" ...>
+- `TextInput`
+  - `input_type: 'text'`
+  - Renders as: `<input type="text" ...>`
 - NumberInput
   - input_type: 'number'
-  - Renders as: &lt;input type="number" ...>
-- **EmailInput**
+  - Renders as: <input type="number" ...>
+- `EmailInput`
   - input_type: 'email'
-  - Renders as: &lt;input type="email" ...>
-- **URLInput**
+  - Renders as: <input type="email" ...>
+- `URLInput`
   - input_type: 'url'
-  - Renders as: &lt;input type="url" ...>
-- **PasswordInput**
-  - input_type: 'password'
-  - Renders as: &lt;input type="password" ...>
-  - Parâmetro: **render_value** - Determina se o widget terá um valor preenchido quando o formulário for reapresentado após um erro de validação (o padrão é False).
-- **HiddenInput**
-  - input_type: 'hidden'
-  - Renders as: &lt;input type="hidden" ...>
-- **DateInput, DateTimeInput, Time**
-  - input_type: 'text'
-  - Renders as: &lt;input type="text" ...>
-  - parâmetro: **format** - O formato em que o valor inicial deste campo será exibido.
-- **Textarea**
-  - Renders as: &lt;textarea>...&lt;/textarea>
-- **CheckboxInput**
-  - input_type: 'checkbox'
-  - Renders as: &lt;input type="checkbox" ...>
-  - Parâmetro: **check_test** - Um chamável que obtém o valor de CheckboxInput e retorna True se a caixa de seleção deve ser marcada para esse valor.
-- **Select**
-  - Renders as: &lt;select>&lt;option ...>...&lt;/select>
-  - Argumento - **choices** -  Este atributo é opcional quando o campo do formulário não possui um atributo de escolhas. Em caso afirmativo, ele substituirá qualquer coisa que você definir aqui quando o atributo for atualizado no campo.
-- **NullBooleanSelect**
+  - Renders as: `<input type="url" ...>`
+- `PasswordInput`
+  - `input_type: 'password'`
+  - Renders as: `<input type="password" ...>`
+  - Parâmetro: `render_value` - Determina se o widget terá um valor preenchido quando o formulário for reapresentado após um erro de validação (o padrão é False).
+- `HiddenInput`
+  - `input_type: 'hidden'`
+  - Renders as: `<input type="hidden" ...>`
+- `DateInput, DateTimeInput, Time`
+  - `input_type: 'text'`
+  - Renders as: `<input type="text" ...>`
+  - parâmetro: `format` - O formato em que o valor inicial deste campo será exibido.
+- `Textarea`
+  - Renders as: `<textarea>...</textarea>`
+- `CheckboxInput`
+  -` input_type: 'checkbox'`
+  - Renders as: `<input type="checkbox" ...>`
+  - Parâmetro: `check_test` - Obtém o valor de CheckboxInput e retorna True se a caixa de seleção deve ser marcada para esse valor.
+- `Select`
+  - Renders as: `<select><option ...>...</select>`
+  - Argumento - `choices` -  Este atributo é opcional quando o campo do formulário não possui um atributo de escolhas. Em caso afirmativo, ele substituirá qualquer coisa que você definir aqui quando o atributo for atualizado no campo.
+- `NullBooleanSelect`
   - Selecione o widget com as opções ‘Desconhecido’, ‘Sim’ e ‘Não’
-- **SelectMultiple**
-Semelhante ao Select, mas permite a seleção múltipla: &lt;select multiple> ... &lt;/select>
-- **RadioSelect**
-Semelhante a Selecionar, mas renderizado como uma lista de botões de opção dentro de &lt;li> tags:
+- `SelectMultiple`
+Semelhante ao Select, mas permite a seleção múltipla: `<select multiple> ... </select>`
+- `RadioSelect`
+Semelhante a Selecionar, mas renderizado como uma lista de botões de opção dentro de `<li>` tags:
+
 ```html
 <ul>
   <li><input type="radio" name="..."></li>
@@ -170,28 +171,31 @@ Semelhante a Selecionar, mas renderizado como uma lista de botões de opção de
 </ul>
 
 ```
-Para um controle mais granular sobre a marcação gerada, você pode repetir os botões de opção no modelo. Assumindo um formulário myform com um campo Beatles que usa um RadioSelect como widget: 
+
+Para um controle maior sobre a marcação gerada, você pode repetir os botões de opção no modelo. Assumindo um formulário `myform` com um campo `city` que usa um `RadioSelect` como widget: 
+
 ```html
 <fieldset>
-    <legend>{{ myform.beatles.label }}</legend>
-    {% for radio in myform.beatles %}
+    <legend>{{ myform.city.label }}</legend>
+    {% for radio in myform.city %}
     <div class="myradio">
         {{ radio }}
     </div>
     {% endfor %}
 </fieldset>
 ```
-- **FileInput**
-  - Renders as: &lt;input type="file" ...>
 
-- **ClearableFileInput¶**
-  - Renders as: <input type="file" ...> - Com uma entrada de caixa de seleção adicional para limpar o valor do campo, se o campo não for obrigatório e tiver dados iniciais. 
+- `FileInput`
+  - Renders as: `<input type="file" ...>`
+
+- `ClearableFileInput`
+  - Renders as: `<input type="file" ...>` - Com uma entrada de caixa de seleção adicional para limpar o valor do campo, se o campo não for obrigatório e tiver dados iniciais. 
 
 [Lista Completa](https://docs.djangoproject.com/en/dev/ref/forms/widgets/)
 
 ## Alterando o HTML
 
-Ainda podemos especificar atributos HTML dentro de um widget.attr
+Ainda podemos especificar atributos HTML dentro de um `widget.attr`
 
 ```python
 class CommentForm(forms.Form):
@@ -239,9 +243,9 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 
 ## Formulário Django-HTML
 
-- **form.campo.id_for_label** - Contém o ID do campo
-- **form.campo.errors** - Irá exibir os errors do campo caso haja algum erro ou mensagem de erro atribuída ao erro gerado.
-- **form.campo** - Renderiza (exibe) o campo 
+- `form.campo.id_for_label` - Contém o ID do campo
+- `form.campo.errors` - Irá exibir os `errors` do campo caso haja algum erro ou mensagem de erro atribuída ao erro gerado.
+- `form.campo` - Renderiza (exibe) o campo 
 
 ```Django 
 {{ form.non_field_errors }}
@@ -268,7 +272,7 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 ```
 
 ## Formulário Django-HTML (Menos HTML)
-- **form.subject.label_tag* - contém todo o elemento `<label>`, com o atributo `for` e `name`.
+- `form.subject.label_tag` - contém todo o elemento `<label>`, com o atributo `for` e `name`.
 
 ```Django 
 {{ form.non_field_errors }}
@@ -298,10 +302,10 @@ Existem diversas formas de exibir um formulário, a primeira é trabalhar 100% c
 
 Podemos gerar um fomulário criado, usando apenas uma linha de código.
 
-- **{{ form.as_table }}** Vai renderizar (exibir) o formulário formatado com TAGS &lt;tr>
-- **{{ form.as_p }}** Vai renderizar (exibir) o formulário formatado com TAGS &lt;p>
-- **{{ form.as_ul }}** Vai renderizar (exibir) o formulário formatado com TAGS &lt;li>
-- 
+- `{{ form.as_table }}` Vai renderizar (exibir) o formulário formatado com TAGS `<tr>`.
+- `{{ form.as_p }}` Vai renderizar (exibir) o formulário formatado com TAGS `<p>`.
+- `{{ form.as_ul }}` Vai renderizar (exibir) o formulário formatado com TAGS `<li>`.
+  
 ```Django
 <form action="" method="post">
   {% csrf_token %}
@@ -313,7 +317,6 @@ Podemos gerar um fomulário criado, usando apenas uma linha de código.
 ```
 
 ## Mensagem de Erro
-
 
 Os erros de um único campo são exibidos seguindo o código abaixo, podendo ser alterado para mudar a sua forma de exibição de forma mais personalizada.
 
@@ -339,7 +342,7 @@ Muitas vexes o texto de ajuda pode ser grande e conter muitos dados, como senhas
 
 ## Iterar Sobre um Formulário
 
-Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para saber mais, além de descrição das propriedades dos campos acesse [Looping over the form’s fields](https://7xwm2drhn3gdndpwco2driejom--docs-djangoproject-com.translate.goog/pt-br/dev/topics/forms/#looping-over-the-form-s-fields)
+Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para saber mais, além de descrição das propriedades dos campos acesse [Looping over the form’s fields](https://stackoverflow.com/questions/19123715/django-for-loop-to-iterate-form-fields)
 
 ```Django
 {% for field in form %}
@@ -353,28 +356,28 @@ Podemos fazer um loop para iterar sobre todos os campos de um formulário. Para 
 {% endfor %}
 ```
 
-## FormView
+# FormView
 
 - É uma view que mostra um formulário. Caso tenha um erro da validação é exibido o formulário com os erros para se corrido. Caso o formulário passe pela validação é direcionado para uma nova URL.
-- Essa view herda métodos e atributos das seguintes “views”:
-  - django.views.generic.base.TemplateResponseMixin
-    - **template_name** - O nome completo de um modelo a ser usado conforme definido por uma string.
-  - django.views.generic.edit.BaseFormView
-  - django.views.generic.edit.FormMixin
-    - **initial** - Um dicionário contendo os dados iniciais do formulário.
-    - **form_class** - A classe de formulário a ser instanciada.
-    - **success_url** -  O URL para redirecionar quando o formulário for processado com sucesso.
-    - **prefix** - O prefixo do formulário gerado.
-    - **get_form_kwargs ()** -  Construa os argumentos de palavra-chave necessários para instanciar o formulário. 
-    - **form_valid(form)** - Redireciona para get_success_url().
-    - **get_success_url()** determine a URL para redirecionar quando o formulário for validado com sucesso. Retorna o success_url por padrão. 
-    - **form_invalid(form)** - Renderiza uma resposta, fornecendo o formulário inválido como contexto. 
-  - django.views.generic.edit.ProcessFormView
-  - django.views.generic.base.View
+- Essa view herda métodos e atributos das seguintes `views`:
+  - `django.views.generic.base.TemplateResponseMixin`
+    - `template_name` - O nome completo de um modelo a ser usado conforme definido por uma string.
+  - `django.views.generic.edit.BaseFormView`
+  - `django.views.generic.edit.FormMixin`
+    - `initial` - Um dicionário contendo os dados iniciais do formulário.
+    - `form_class` - A classe de formulário a ser instanciada.
+    - `success_url` -  O URL para redirecionar quando o formulário for processado com sucesso.
+    - `prefix` - O prefixo do formulário gerado.
+    - `get_form_kwargs ()` -  Construa os argumentos de palavra-chave necessários para instanciar o formulário. 
+    - `form_valid(form)` - Redireciona para `get_success_url()`.
+    - `get_success_url()` determine a URL para redirecionar quando o formulário for validado com sucesso. Retorna o `success_url` por padrão. 
+    - `form_invalid(form)` - Renderiza uma resposta, fornecendo o formulário inválido como contexto. 
+  - `django.views.generic.edit.ProcessFormView`
+  - `django.views.generic.base.View`
 
 ### Enviando os dados
 
-Os métodos **post** e **get** podem enviar os dados dos formulário para outras Views, e possuem a seguinte sintaxe. 
+Os métodos `post` e `get` podem enviar os dados dos formulário para outras Views, e possuem a seguinte sintaxe. 
 
 ```Python
 def get(self, request, *args, **kwargs):
@@ -474,26 +477,29 @@ class success(TemplateView):
 # Mensagens de Erro e Sucesso
 
 Tipos de mensagens
-- DEBUG - Mensagens relacionadas ao desenvolvimento que serão ignoradas (ou removidas) em uma implantação de produção
-- INFO - Mensagens informativas para o usuário
-- SUCCESS - Uma ação foi bem-sucedida, por ex. “Seu perfil foi atualizado com sucesso”
-- WARNING - Não ocorreu uma falha, mas pode ser iminente
-- ERROR - Uma ação não teve sucesso ou ocorreu alguma outra falha 
+- `DEBUG` - Mensagens relacionadas ao desenvolvimento que serão ignoradas (ou removidas) em uma implantação de produção
+- `INFO` - Mensagens informativas para o usuário
+- `SUCCESS` - Uma ação foi bem-sucedida, por ex. “Seu perfil foi atualizado com sucesso”
+- `WARNING` - Não ocorreu uma falha, mas pode ser iminente
+- `ERROR` - Uma ação não teve sucesso ou ocorreu alguma outra falha 
 
 FONTE (The messages framework)[https://docs.djangoproject.com/pt-br/3.2/ref/contrib/messages/]
 
-Para adicionar uma mensagem, use a sintaxe
+Para adicionar uma mensagem, use a sintaxe:
+
 ```Python
 from django.contrib import messages
 messages.add_message(request, messages.INFO, 'Hello world.')
 ```
-Alguns métodos de atalho fornecem uma maneira padrão de adicionar mensagens com tags comumente usadas (que geralmente são representadas como classes HTML para a mensagem):
+
+- Alguns métodos de atalho fornecem uma maneira padrão de adicionar mensagens com tags comumente usadas (que geralmente são representadas como classes HTML para a mensagem):
+
 ```Python
 messages.debug(request, '%s SQL statements were executed.' % count)
 messages.info(request, 'Three credits remain in your account.')
 messages.success(request, 'Profile details updated.')
 messages.warning(request, 'Your account expires in three days.')
-messages.error(request, 'Document deleted.'
+messages.error(request, 'Document deleted.')
 ```
 
 ## Exibindo a mensagem no Template
@@ -516,11 +522,10 @@ Mesmo se você souber que há apenas uma mensagem, você ainda deve iterar sobre
 
 Adiciona um atributo de mensagem de sucesso às classes baseadas em FormView 
 
-- Os dados limpos do formulário estão disponíveis para interpolação de strings usando a sintaxe %(field_name)s.
-- Para ModelForms, se você precisar acessar os campos do objeto salvo, substitua o método get_success_message(). 
+- Os dados limpos do formulário estão disponíveis para interpolação de strings usando a sintaxe `%(field_name)`s.
+- Para ModelForms, se você precisar acessar os campos do objeto salvo, substitua o método `get_success_message()`. 
 
 ```Python
-
 class AuthorCreateView(SuccessMessageMixin, CreateView):
     model = Author
     success_url = '/success/'

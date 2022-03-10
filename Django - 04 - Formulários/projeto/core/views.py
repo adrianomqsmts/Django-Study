@@ -13,10 +13,10 @@ class index(FormView):
   initial = {'message': 'Mensagem Inicial'}
 
   def post(self, request, *args, **kwargs):
-    form = request.POST
-    if form.is_valid():
-      return render(request, 'success.html', {'form': form})
-
+        initial = None
+        form = Formulario(initial=initial, data=request.POST)
+        if form.is_valid():
+          return render(request, 'success.html', {'form': form})
 
 class success(TemplateView):
   template_name = "success.html"
