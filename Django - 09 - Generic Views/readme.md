@@ -1,5 +1,25 @@
+- [1. Criando Rotas](#1-criando-rotas)
+  - [1.1. Conversores de Caminhos](#11-conversores-de-caminhos)
+    - [1.1.1. Usando Expressões regulares](#111-usando-expressões-regulares)
+- [2. Generic Views - Visões Genéricas](#2-generic-views---visões-genéricas)
+  - [2.1. Base Views](#21-base-views)
+    - [2.1.1. View](#211-view)
+    - [2.1.2. TemplateView](#212-templateview)
+    - [2.1.3. Redirect View](#213-redirect-view)
+  - [2.2. Display Views](#22-display-views)
+    - [2.2.1. DetailView](#221-detailview)
+    - [2.2.2. ListView](#222-listview)
+  - [2.3. Editing Views](#23-editing-views)
+    - [2.3.1. FormView](#231-formview)
+    - [2.3.2. CreateView](#232-createview)
+    - [2.3.3. UpdateView](#233-updateview)
+    - [2.3.4. DeleteView](#234-deleteview)
+  - [2.4. Date Views](#24-date-views)
+    - [2.4.1. ArchiveIndexView](#241-archiveindexview)
+    - [2.4.2. YearArchiveView](#242-yeararchiveview)
+    - [2.4.3. Outras DateViews](#243-outras-dateviews)
 
-# 11. Criando Rotas
+# 1. Criando Rotas
 
 Como criar urls dinâmicas e com expressões regulares acesse [URL dispatcher]([https://link](https://docs.djangoproject.com/en/dev/topics/http/urls/))
 
@@ -26,7 +46,7 @@ urlpatterns = [
 - Uma solicitação para a url  `/articles/2003` não corresponderia a nenhum desses padrões, porque cada padrão requer que o URL termine com uma barra.
 - Uma solicitação para a url  `/articles/2003/03/building-a-django-site/` corresponderia ao padrão final. Django chamaria a função `views.article_detail(request, year=2003, month=3, slug="building-a-django-site")`.
 
-## 11.1. Conversores de Caminhos
+## 1.1. Conversores de Caminhos
 
 Os seguintes conversores de caminho estão disponíveis por padrão:
 
@@ -38,7 +58,7 @@ Os seguintes conversores de caminho estão disponíveis por padrão:
 
 [Registrando conversores de caminho personalizado](https://docs.djangoproject.com/en/3.1/topics/http/urls/#registering-custom-path-converters)
 
-### 11.1.1. Usando Expressões regulares
+### 1.1.1. Usando Expressões regulares
 Se a sintaxe de caminhos e conversores não for suficiente para definir seus padrões de URL, você também pode usar expressões regulares. Para fazer isso, use `re_path()` em vez de `path()`.
 
 Em expressões regulares Python, a sintaxe para grupos nomeados de expressão regular é (`? P <nome> padrão`), onde nome é o nome do grupo e padrão é algum padrão a ser correspondido.
@@ -96,15 +116,15 @@ Fontes:
 
 ***********************
 
-# 12. Generic Views - Visões Genéricas
+# 2. Generic Views - Visões Genéricas
 
 As views genéricas surgem para simplificar o trabalho repetitivo de criação das views, ou seja, elas contém diversos métodos prontos que nem precisamos naos preocupar em ter que escreve-los como validação de formulários. 
 
-## 12.1. Base Views
+## 2.1. Base Views
 
 As três classes a seguir fornecem muitas das funcionalidades necessárias para criar visualizações do Django. Você pode pensar nelas como visualizações pai, que podem ser usadas por si mesmas ou herdadas. Eles podem não fornecer todos os recursos necessários para projetos; nesse caso, há Mixins e visualizações baseadas em classes genéricas.
 
-### 12.1.1. View 
+### 2.1.1. View 
 
 A visão de base baseada na classe mestre. Todas as outras visualizações baseadas em classe herdam desta classe base. Não é estritamente uma visualização genérica e, portanto, também pode ser importada django.views.
 
@@ -130,7 +150,7 @@ urlpatterns = [
 ]
 ```
 
-### 12.1.2. TemplateView
+### 2.1.2. TemplateView
 
 Quando você precisa apenas renderizar uma página para o usuário essa com certeza é a melhor Class Based View (CBV) para o caso. Você pode editar o contexto que o template recebe sobrescrevendo a função `get_context_data()`. Importante ressaltar que o TemplateView conta com o Mixin `ContextMixin` que irá pegar automaticamente os argumentos da URL que serviu a View.
 
@@ -167,7 +187,7 @@ from django.views.generic import TemplateView
 TemplateView.as_view(extra_context={'title': 'Custom Title'})
 ```
 
-### 12.1.3. Redirect View
+### 2.1.3. Redirect View
 
 Redireciona para um determinado URL.
 
@@ -212,11 +232,11 @@ urlpatterns = [
 ]
 ```
 
-## 12.2. Display Views
+## 2.2. Display Views
 
 As duas views abaixo foram desenvolvidas para exibir informações. Tipicamente essas views são as mais usadas na maioria dos projetos.
 
-### 12.2.1. DetailView
+### 2.2.1. DetailView
 
 Esta CBV é usada para renderizar um template contendo em seu contexto um objeto obtido pelo parâmetro enviado na URL. Contextualizando seria passado algo como um produto e o seu id para ser detalhado dentro do template.
 
@@ -315,7 +335,7 @@ urlpatterns = [
 <p>Date: {{ now|date }}</p>
 ```
 
-### 12.2.2. ListView
+### 2.2.2. ListView
 
 Uma página que representa uma lista de objetos. Enquanto essa view está executando a variável `self.object_list` vai conter a lista de objetos que a view está utilizando. Também possui o mesmo fluxo que as demais views.
 
@@ -388,11 +408,11 @@ urlpatterns = [
 </ul>
 ```
 
-## 12.3. Editing Views
+## 2.3. Editing Views
 
 As views descritas abaixo contém o comportamento básico para edição de conteúdo. 
 
-### 12.3.1. FormView
+### 2.3.1. FormView
 
 Uma view que mostra um formulário. Se houver erro, mostra o formulário novamente contendo os erros de validação. Em caso de sucesso redireciona o usuário para uma nova URL.
 
@@ -440,10 +460,12 @@ contact.html
 </form>
 ```
 
-### 12.3.2. CreateView
+### 2.3.2. CreateView
 Uma visão que exibe um formulário para a criação de um objeto, exibindo novamente o formulário com erros de validação (se houver) e salvando o objeto. Trabalham bem com MODELOS!
 
-- O atributo fields determina quais campos do model devem estar presentes no formulário. É obrigatório especificar o atributo fields ou então o atributo form_class, nunca os dois ao mesmo tempo, pois isso geraria uma exceção `ImproperlyConfigured`.
+- O atributo `fields` determina quais campos do model devem estar presentes no formulário. 
+  - É **obrigatório** especificar o atributo `fields` ou então o atributo `form_class`, nunca os dois ao mesmo tempo, pois isso geraria uma exceção `ImproperlyConfigured`.
+- Deve especificar o caminho de sucesso, com `success_url`, sobrescrevendo o método `get_success_url()` ou especificando dentro do modelo do banco de dados o método `get_absolute_url()` que irá especificar o redirecionamento do Objeto.
 
 urls.py
 
@@ -535,7 +557,7 @@ class AuthorCreate(CreateView):
 ```
 
 
-### 12.3.3. UpdateView
+### 2.3.3. UpdateView
 
 Uma visão que exibe um formulário para editar um objeto existente, exibindo novamente o formulário com erros de validação (se houver) e salvando as alterações no objeto. Isso usa um formulário gerado automaticamente a partir da classe de modelo do objeto (a menos que uma classe de formulário seja especificada manualmente).
 
@@ -562,7 +584,7 @@ class AuthorUpdate(UpdateView):
 </form>
 ```
 
-### 12.3.4. DeleteView
+### 2.3.4. DeleteView
 
 Uma visualização que exibe uma página de confirmação e exclui um objeto existente. O objeto fornecido só será excluído se o método de solicitação for POST. Se essa visualização for obtida por meio de GET, ela exibirá uma página de confirmação que deve conter um formulário que efetua um POST no mesmo URL.
 
@@ -618,11 +640,11 @@ urlpatterns = [
 ]
 ```
 
-## 12.4. Date Views
+## 2.4. Date Views
 
 Date-based generic views são views com a função de exibir páginas com dados filtrados por datas, por exemplo: posts em um blog, notícias, consultas ao médico, etc.
 
-### 12.4.1. ArchiveIndexView
+### 2.4.1. ArchiveIndexView
 
 Uma página de índice de nível superior mostrando os objetos “mais recentes”, por data. Objetos com uma data futura não são incluídos, a menos que você defina `allow_future` como `True`.
 
@@ -653,7 +675,7 @@ urlpatterns = [
 </ul>
 ```
 
-### 12.4.2. YearArchiveView
+### 2.4.2. YearArchiveView
 
 Uma página de arquivo anual mostrando todos os meses disponíveis em um determinado ano. Objetos com uma data futura não são exibidos, a menos que você defina `allow_future` como `True`.
 
@@ -710,7 +732,7 @@ urlpatterns = [
 </div>
 ```
 
-### 12.4.3. Outras DateViews
+### 2.4.3. Outras DateViews
 
 Existem também outras que seguem a mesma lógica de implementação com os mesmos atributos e métodos como:
 - [MonthArchiveView](https://docs.djangoproject.com/en/dev/ref/class-based-views/generic-date-based/#montharchiveview)
