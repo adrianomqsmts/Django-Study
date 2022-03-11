@@ -63,8 +63,10 @@ u.save()
 ```
 
 
-# Sistema de Login I
+# Sistema de Login - Function Based View
 
-Podemos criar um sistema de login
+## Create User
+
+O Django tem um formulário pronto para a criação de usuário, chamado `UserCreationForm`
 
 
