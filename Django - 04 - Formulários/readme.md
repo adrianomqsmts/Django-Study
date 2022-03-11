@@ -26,6 +26,7 @@ FONTE [Tutorial Django Parte 9: Trabalhando com formulários](https://developer.
 - [5. FormView](#5-formview)
     - [5.0.1. Enviando os dados](#501-enviando-os-dados)
     - [5.0.2. Exemplos](#502-exemplos)
+  - [5.1. Validando formulários](#51-validando-formulários)
 - [6. Mensagens de Erro e Sucesso](#6-mensagens-de-erro-e-sucesso)
   - [6.1. Exibindo a mensagem no Template](#61-exibindo-a-mensagem-no-template)
   - [6.2. SuccessMessageMixin](#62-successmessagemixin)
@@ -497,6 +498,42 @@ class index(FormView):
 class success(TemplateView):
   template_name = "success.html"
 ```
+
+## 5.1. Validando formulários
+
+Podemos ainda validar os formulários com a classe e os parâmetros [validators](https://docs.djangoproject.com/en/dev/ref/validators/). 
+
+Primeiro podemos criar uma função própria e usá-la para validar um valor de um campo do formulário, ou podemos usar uma função pronta para validar o nosso formulário. 
+
+```python
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+def validate_even(value):
+    if value % 2 != 0:
+        raise ValidationError(
+            _('%(value)s is not an even number'),
+            params={'value': value},
+        )
+```
+
+então precisamos apenas chamar o argumento **validators** dentro de um campo, que serve tanto em campos de modelo, quanto campos de formulários.
+
+```python
+from django import forms
+
+class MyForm(forms.Form):
+    even_field = forms.IntegerField(validators=[validate_even])
+```
+
+ou então podemos usar um validador pronto como:
+
+```python
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+max_discount = models.FloatField( verbose_name=u'Maximum Discount', validators = [MinValueValidator(0.0)])
+```
+
 
 # 6. Mensagens de Erro e Sucesso
 
