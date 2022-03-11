@@ -10,7 +10,7 @@ class PostListView(ListView):
     model = PostModel
     template_name = "index.html"
 
-class ModelDetailView(DetailView):
+class PostDetailView(DetailView):
     model = PostModel
     context_object_name = 'post'
     template_name = "details.html"

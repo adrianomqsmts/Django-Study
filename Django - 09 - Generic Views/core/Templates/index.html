@@ -5,8 +5,8 @@
 {% for post in object_list %}
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title"> <a href="{% url 'index' %}">{{post.title}}</a> | {{post.post_date | date}}</h4>
-        <p class="card-text">{{post.content}}</p>
+        <h4 class="card-title"> <a href="{% url 'detail' post.id %}">{{post.title}}</a> | {{post.post_date | date}}</h4>
+        <p class="card-text">{{post.content | truncatewords:5}}</p>
     </div>
 </div>
 {% endfor %}
