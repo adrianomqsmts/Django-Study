@@ -378,6 +378,198 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return self.request.user
 ```
 
+# Custom UserModel
 
 
-#
+Caso precise de um modelo de usuário diferente, precisamos usar ou recriar o modelo `User` e `userManager`.
+
+## Extender
+
+Podemos simplificar, e criar um modelo com um relacionamento OneToOne com o modelo `User`, permitindo assim, que tenhamos um modelo sempre associado ao usuario.
+
+
+```python
+from django.contrib.auth.models import User
+from django.db import models
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, related_name='profile')
+    age = models.IntegerField()
+```
+
+
+## Recriar
+
+Os passos são os mesmos para cada um:
+
+1. Crie um modelo de usuário e um gerenciador personalizados
+2. Atualizar `configurações.py`
+3. Personalize os formulários `UserCreationForm`, `UserChangeForm`, etc.
+4. Atualize o administrador
+
+
+Caso necessite recriar ou redefinir o o modelo `User`, como permitir que o login seja feito pelo e-mail, precisamos criar um modelo que irá herdar as classes `AbstractBaseUser` ou `AbstractUser`, além do `PermissionsMixin`.
+
+
+- `AbstractUser`: use esta opção se estiver satisfeito com os campos existentes no modelo de usuário e quiser apenas remover o campo de nome de usuário.
+
+```python
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+from .managers import CustomUserManager
+
+
+class CustomUser(AbstractUser):
+    username = None
+    email = models.EmailField('email address', unique=True)
+
+    USERNAME_FIELD = 'email' # 
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
+    def __str__(self):
+        return self.email
+```
+
+- `USERNAME_FIELD`: essa variável recebe o campo do model que será utilizado pelo Django para autenticação. É aqui que ao invés de username do model default, eu coloco email para fazer o login pelo email do usuário.
+- `REQUIRED_FIELDS`: os campos que são obrigatórios desse model. Nenhuma dúvida quanto isso, certo?
+- `class Meta`, `verbose_name` e `verbose_plural`: aqui a gente define a taxonomia que nosso model terá para o Django no singular e no plural.
+- `get_full_name`, `get_short_name` e `email_user`: são métodos de apoio.
+
+```python
+from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import ugettext_lazy as _
+
+
+class CustomUserManager(BaseUserManager):
+
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError(_('The Email must be set'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError(_('Superuser must have is_staff=True.'))
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError(_('Superuser must have is_superuser=True.'))
+        return self.create_user(email, password, **extra_fields)
+
+```
+
+
+    AbstractBaseUser: use esta opção se quiser começar do zero criando seu próprio modelo de usuário completamente novo.
+
+```python
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.core import validators
+from django.utils.translation import ugettext_lazy as _
+import re
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    
+    username = models.CharField(_('username'), max_length=15, unique=True, help_text=_('Required. 15 characters or fewer. Letters, numbers and @/./+/-/_ characters'), validators=[ validators.RegexValidator(re.compile('^[\w.@+-]+$'), _('Enter a valid username.'), _('invalid'))])    
+
+    first_name = models.CharField(_('first name'), max_length=30)  
+
+    last_name = models.CharField(_('last name'), max_length=30)  
+
+    email = models.EmailField(_('email address'), max_length=255, unique=True)  
+
+    is_staff = models.BooleanField(_('staff status'), default=False, help_text=_('Designates whether the user can log into this admin site.'))   
+
+    is_active = models.BooleanField(_('active'), default=True, help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'))
+    
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+
+    is_trusty = models.BooleanField(_('trusty'), default=False, help_text=_('Designates whether this user has confirmed his account.'))
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
+
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+        
+    def get_full_name(self):
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name.strip()
+    
+    def get_short_name(self):
+        return self.first_name
+        
+    def email_user(self, subject, message, from_email=None):
+        send_mail(subject, message, from_email, [self.email])
+```
+
+```python
+class UserManager(BaseUserManager):
+    def _create_user(self, username, email, password, is_staff, is_superuser, **extra_fields):
+        now = timezone.now()
+
+        if not username:
+            raise ValueError(_(‘The given username must be set’))
+
+        email = self.normalize_email(email)
+
+        user = self.model(
+            username=username,
+            email=email,
+            is_staff=is_staff,
+            is_active=True,
+            is_superuser=is_superuser,
+            last_login=now,
+            date_joined=now,
+            **extra_fields
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+ 
+    def create_user(self, username, email=None, password=None, **extra_fields):
+        return self._create_user(username, email, password, False, False, **extra_fields)
+    
+    def create_superuser(self, username, email, password, **extra_fields):
+        user=self._create_user(username, email, password, True, True, **extra_fields)
+        user.is_active=True
+        user.save(using=self._db)
+        return user
+```
+
+
+## Formulários Personalizados
+
+Basta herdar os formulários base, explicitando os campos.
+
+```python
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+
+from .models import CustomUser
+
+
+class CustomUserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ('email',)
+
+
+class CustomUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = CustomUser
+        fields = ('email',)
+
+```

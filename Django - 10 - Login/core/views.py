@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate, update_session_auth
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from .forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 # Create your views here.
@@ -20,7 +21,8 @@ class IndexView(TemplateView):
 
 class UserCreateView(CreateView):
     model = User
-    form_class = UserCreationForm
+    # form_class = UserCreationForm
+    form_class = CustomUserCreationForm
     template_name = 'create.html'
     success_url = reverse_lazy('login')
 
