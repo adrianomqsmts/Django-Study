@@ -424,9 +424,10 @@ class Profile(models.Model):
 Os passos são os mesmos para cada um:
 
 1. Crie um modelo de usuário e um gerenciador personalizados
-2. Atualizar `configurações.py`
-3. Personalize os formulários `UserCreationForm`, `UserChangeForm`, etc.
-4. Atualize o administrador
+2. Atualizar `setting.py`
+  - `AUTH_USER_MODEL = 'users.CustomUser'`
+4. Personalize os formulários `UserCreationForm`, `UserChangeForm`, etc.
+5. Atualize o administrador
 
 
 Caso necessite recriar ou redefinir o o modelo `User`, como permitir que o login seja feito pelo e-mail, precisamos criar um modelo que irá herdar as classes `AbstractBaseUser` ou `AbstractUser`, além do `PermissionsMixin`.
