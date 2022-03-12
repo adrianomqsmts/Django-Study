@@ -1,4 +1,4 @@
-# Login System
+# 1. Login System
 
 Django já tem todo um sistema pronto de autenticação que pode ser reaproveitado. Toda a implementação está dentro do módulo [`django.contrib.auth.forms`](https://docs.djangoproject.com/en/dev/ref/contrib/auth/).
 
@@ -9,10 +9,31 @@ Fontes:
 - [how use UpdateView change user password in the django](https://stackoverflow.com/questions/55061329/how-use-updateview-change-user-password-in-the-django)
 - [Tutorial Django Parte 8: Autenticação de usuário e permissões](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Authenticationhttps://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Authentication)
 - [How to disable next URL parameter while using login_required decorator in django?](https://stackoverflow.com/questions/63566841/how-to-disable-next-url-parameter-while-using-login-required-decorator-in-django)
+- [Creating a Custom User Model in Django](https://testdriven.io/blog/django-custom-user-model/)
+- [Custom User Model no Django](https://medium.com/@gabrielfgularte/custom-user-model-no-django-d9bdf2838bd8https://medium.com/@gabrielfgularte/custom-user-model-no-django-d9bdf2838bd8)
 
+# Sumário 
 
+- [1. Login System](#1-login-system)
+- [Sumário](#sumário)
+- [2. Model User](#2-model-user)
+  - [2.1. Criar novo usuário](#21-criar-novo-usuário)
+  - [2.2. Mudando senhas](#22-mudando-senhas)
+- [3. Login Required](#3-login-required)
+- [4. Sistema de Login I](#4-sistema-de-login-i)
+- [5. Sistema de Login - Class/Function Based View](#5-sistema-de-login---classfunction-based-view)
+  - [5.1. Create User](#51-create-user)
+  - [5.2. Login](#52-login)
+  - [5.3. Logout](#53-logout)
+  - [5.4. Update](#54-update)
+  - [5.5. Alterar Senha](#55-alterar-senha)
+  - [5.6. Remover](#56-remover)
+- [6. Custom UserModel](#6-custom-usermodel)
+  - [6.1. Extender](#61-extender)
+  - [6.2. Recriar](#62-recriar)
+  - [6.3. Formulários Personalizados](#63-formulários-personalizados)
 
-# Model User
+# 2. Model User
 
 É um modelo de usuário embutido do Django, que possuí os seguintes campos:
 
@@ -42,7 +63,7 @@ Os métodos do modelo `user` são:
 - `get_and_delete_messages()`: Retorna uma lista de objetos Message da fila do usuário e deleta as mensagens da fila.
 - `email_user(subject, message, from_email=None)`: Envia um e-mail para o usuário. Se `from_email` é `None`, o Django usa o `DEFAULT_FROM_EMAIL`.
 
-## Criar novo usuário
+## 2.1. Criar novo usuário
 
 O modelo UserManager contém o método `create_user(username, email, password=None)`  que permite criar um novo usuário.
 
@@ -58,7 +79,7 @@ user.is_staff = True
 user.save()
 ```
 
-## Mudando senhas
+## 2.2. Mudando senhas
 
 Para alterar uma senha, basta chamar o método `set_password()`
 
@@ -71,7 +92,7 @@ u.set_password('new password')
 u.save()
 ```
 
-# Login Required
+# 3. Login Required
 
 No arquivo `settings.py` precisamos informar o caminho para o `LOGIN_REDIRECT_URL` que irá especificar o caminho padrão do após o login (padrão: '/accounts/profile/' ) e `LOGIN_URL` que informa a url para o login (padrão: '/accounts/login/'). 
 
@@ -100,7 +121,7 @@ class MyView(LoginRequiredMixin, View):
     redirect_field_name = 'redirect_to'
 ```
 
-# Sistema de Login I 
+# 4. Sistema de Login I 
 
 Uma forma mais simples de criar um sistema de login, é reaproveitar ao máximo as funcionalidades prontas, e neste exemplo, iremos apenas definir a rota dos templates e os templates.
 
@@ -190,7 +211,7 @@ Na raiz do projeto, podemos definir na pasta `templates` uma nova pasta denomina
 Para ver o exemplo completo acesse: [Tutorial Django Parte 8: Autenticação de usuário e permissões](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Authentication)
 
 
-# Sistema de Login - Class/Function Based View
+# 5. Sistema de Login - Class/Function Based View
 
 Nesse contexto podemos reaproveitar o modelo `User` e os formulários prontos, que nos permitam criar, atualizar e alterar a senha dos usuários.
 
@@ -203,7 +224,7 @@ Algum dos formulários:
 - `UserChangeForm`: Um formulário usado no admin para mudar informações de um usuário e suas permissões.
 - `UserCreationForm`: Um formulário para criar um novo usuário.
 
-## Create User
+## 5.1. Create User
 
 Podemos usar o formulário de criação de usuário `UserCreationForm` e o modelo `User`, em conjunto com o a view `CreateView` para criar um usuário no banco de dados.
 
@@ -232,7 +253,7 @@ def cadastrar_usuario(request):
     return render(request, 'cadastro.html', {'form': form})
 ```
 
-## Login
+## 5.2. Login
 
 Para realizar o login, precisamos do auxílio de duas funções: `authenticate`  e `login` que permitem autenticar o usuário no sistema e logá-lo, respectivamente.
 
@@ -274,7 +295,7 @@ def logar_usuario(request):
     return render(request, 'login.html', {'form_login': form_login})
 ```
 
-## Logout
+## 5.3. Logout
 
 Para realizar o logout de um usuário, basta chamar a função `logout(user)` para deslogá-lo do sistema. 
 
@@ -295,7 +316,7 @@ def deslogar_usuario(request):
 ```
 
 
-## Update
+## 5.4. Update
 
 Para atualizar um usuário, podemos usar a view `UpdateView` em conjunto com o modelo `User` definindo quais os campos queremos permitir que o usuário atualize.
 
@@ -312,7 +333,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user # pega o usuário atual
 ```
 
-## Alterar Senha
+## 5.5. Alterar Senha
 
 Para alterar senha é um pouco mais complicado usando o formulário, pois precisamos instanciar o formulário atual com o usuário atual, além de atualizar a sessão com a nova senha.
 
@@ -362,7 +383,7 @@ def alterar_senha(request):
 
 Podemos usar o método `set_password` ao invés de usar os formulários, caso necessário.
 
-## Remover
+## 5.6. Remover
 
 Podemos usar a view `DeleteView` em conjunto com o modelo `User` para remover um usuário.
 
@@ -378,12 +399,12 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         return self.request.user
 ```
 
-# Custom UserModel
+# 6. Custom UserModel
 
 
 Caso precise de um modelo de usuário diferente, precisamos usar ou recriar o modelo `User` e `userManager`.
 
-## Extender
+## 6.1. Extender
 
 Podemos simplificar, e criar um modelo com um relacionamento OneToOne com o modelo `User`, permitindo assim, que tenhamos um modelo sempre associado ao usuario.
 
@@ -398,7 +419,7 @@ class Profile(models.Model):
 ```
 
 
-## Recriar
+## 6.2. Recriar
 
 Os passos são os mesmos para cada um:
 
@@ -549,7 +570,7 @@ class UserManager(BaseUserManager):
 ```
 
 
-## Formulários Personalizados
+## 6.3. Formulários Personalizados
 
 Basta herdar os formulários base, explicitando os campos.
 
