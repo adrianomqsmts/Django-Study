@@ -10,7 +10,8 @@ Fontes:
 - [Tutorial Django Parte 8: Autenticação de usuário e permissões](https://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Authenticationhttps://developer.mozilla.org/pt-BR/docs/Learn/Server-side/Django/Authentication)
 - [How to disable next URL parameter while using login_required decorator in django?](https://stackoverflow.com/questions/63566841/how-to-disable-next-url-parameter-while-using-login-required-decorator-in-django)
 - [Creating a Custom User Model in Django](https://testdriven.io/blog/django-custom-user-model/)
-- [Custom User Model no Django](https://medium.com/@gabrielfgularte/custom-user-model-no-django-d9bdf2838bd8https://medium.com/@gabrielfgularte/custom-user-model-no-django-d9bdf2838bd8)
+- [Custom User Model no Django](https://medium.com/@gabrielfgularte/custom-user-model-no-django-d9bdf2838bd8)
+- [Django Log In with Email not Username](https://learndjango.com/tutorials/django-log-in-email-not-username)
 
 # Sumário 
 
